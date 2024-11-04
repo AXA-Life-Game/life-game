@@ -1,6 +1,7 @@
 import {createRef, useEffect, useState} from 'react'
 import './App.css'
 import init from "./test.js";
+import {Box} from "@mui/system";
 
 
 function App() {
@@ -18,10 +19,10 @@ function App() {
     }, []);
 
     return (
-        <>
+        <Box>
             Hello
-            <canvas ref={canvasRef} width={500} height={500}/>
-        </>
+            <canvas ref={canvasRef} width={1000} height={500}/>
+        </Box>
     )
 }
 
