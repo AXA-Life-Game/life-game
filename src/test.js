@@ -3,128 +3,353 @@ import kaplay from 'kaplay';
 const init = (params) => {
     // @ts-check
 
-    const FLOOR_HEIGHT = 48;
-    const JUMP_FORCE = 800;
-    const SPEED = 480;
-
-// initialize context
-    const k = kaplay(params);
-
-    setBackground(141, 183, 255);
+kaplay({
+    background: [141, 183, 255],
+});
 
 // load assets
-    loadSprite("bean", "https://kaboomjs.com/sprites/bean.png");
+loadSprite("bean", "https://kaboomjs.com/sprites/bean.png");
+loadSprite("bag", "https://kaboomjs.com/sprites/bag.png");
+loadSprite("ghosty", "https://kaboomjs.com/sprites/ghosty.png");
+loadSprite("spike", "https://kaboomjs.com/sprites/spike.png");
+loadSprite("grass", "https://kaboomjs.com/sprites/grass.png");
+loadSprite("steel", "https://kaboomjs.com/sprites/steel.png");
+loadSprite("prize", "https://kaboomjs.com/sprites/jumpy.png");
+loadSprite("apple", "https://kaboomjs.com/sprites/apple.png");
+loadSprite("portal", "https://kaboomjs.com/sprites/portal.png");
+loadSprite("coin", "https://kaboomjs.com/sprites/coin.png");
+loadSound("coin", "https://kaboomjs.com/examples/sounds/score.mp3");
+loadSound("powerup", "https://kaboomjs.com/examples/sounds/powerup.mp3");
+loadSound("blip", "https://kaboomjs.com/examples/sounds/blip.mp3");
+loadSound("hit", "https://kaboomjs.com/examples/sounds/hit.mp3");
+loadSound("portal", "https://kaboomjs.com/examples/sounds/portal.mp3");
 
-    scene("game", () => {
-        // define gravity
-        setGravity(2400);
+setGravity(3200);
 
-        // add a game object to screen
-        const player = add([
-            // list of components
-            sprite("bean"),
-            pos(80, 40),
-            area(),
-            body(),
-        ]);
+// custom component controlling enemy patrol movement
+function patrol(speed = 60, dir = 1) {
+    return {
+        id: "patrol",
+        require: ["pos", "area"],
+        add() {
+            this.on("collide", (obj, col) => {
+                if (col.isLeft() || col.isRight()) {
+                    dir = -dir;
+                }
+            });
+        },
+        update() {
+            this.move(speed * dir, 0);
+        },
+    };
+}
 
-        // floor
-        add([
-            rect(width(), FLOOR_HEIGHT),
-            outline(4),
-            pos(0, height()),
-            anchor("botleft"),
+// custom component that makes stuff grow big
+function big() {
+    let timer = 0;
+    let isBig = false;
+    let destScale = 1;
+    return {
+        // component id / name
+        id: "big",
+        // it requires the scale component
+        require: ["scale"],
+        // this runs every frame
+        update() {
+            if (isBig) {
+                timer -= dt();
+                if (timer <= 0) {
+                    this.smallify();
+                }
+            }
+            this.scale = this.scale.lerp(vec2(destScale), dt() * 6);
+        },
+        // custom methods
+        isBig() {
+            return isBig;
+        },
+        smallify() {
+            destScale = 1;
+            timer = 0;
+            isBig = false;
+        },
+        biggify(time) {
+            destScale = 2;
+            timer = time;
+            isBig = true;
+        },
+    };
+}
+
+// define some constants
+const JUMP_FORCE = 1320;
+const MOVE_SPEED = 480;
+const FALL_DEATH = 2400;
+
+const LEVELS = [
+    [
+        "                                   ",
+        "                                   ",
+        "                    $$             ",
+        "        $          ===             ",
+        "                                   ",
+        "                    > =           @",
+        "===================================",
+    ]
+];
+
+// define what each symbol means in the level graph
+const levelConf = {
+    tileWidth: 64,
+    tileHeight: 64,
+    tiles: {
+        "=": () => [
+            sprite("grass"),
             area(),
             body({ isStatic: true }),
-            color(132, 101, 236),
-        ]);
+            anchor("bot"),
+            offscreen({ hide: true }),
+            "platform",
+        ],
+        "-": () => [
+            sprite("steel"),
+            area(),
+            body({ isStatic: true }),
+            offscreen({ hide: true }),
+            anchor("bot"),
+        ],
+        "0": () => [
+            sprite("bag"),
+            area(),
+            body({ isStatic: true }),
+            offscreen({ hide: true }),
+            anchor("bot"),
+        ],
+        "$": () => [
+            sprite("coin"),
+            area(),
+            pos(0, -9),
+            anchor("bot"),
+            offscreen({ hide: true }),
+            "coin",
+        ],
+        "%": () => [
+            sprite("prize"),
+            area(),
+            body({ isStatic: true }),
+            anchor("bot"),
+            offscreen({ hide: true }),
+            "prize",
+        ],
+        "^": () => [
+            sprite("spike"),
+            area(),
+            body({ isStatic: true }),
+            anchor("bot"),
+            offscreen({ hide: true }),
+            "danger",
+        ],
+        "#": () => [
+            sprite("apple"),
+            area(),
+            anchor("bot"),
+            body(),
+            offscreen({ hide: true }),
+            "apple",
+        ],
+        ">": () => [
+            sprite("ghosty"),
+            area(),
+            anchor("bot"),
+            body(),
+            patrol(),
+            offscreen({ hide: true }),
+            "enemy",
+        ],
+        "@": () => [
+            sprite("portal"),
+            area({ scale: 0.5 }),
+            anchor("bot"),
+            pos(0, -12),
+            offscreen({ hide: true }),
+            "portal",
+        ],
+    },
+};
 
-        function jump() {
-            if (player.isGrounded()) {
-                player.jump(JUMP_FORCE);
-            }
+scene("game", ({ levelId, coins } = { levelId: 0, coins: 0 }) => {
+    // add level to scene
+    const level = addLevel(LEVELS[levelId ?? 0], levelConf);
+
+    // define player object
+    const player = add([
+        sprite("bean"),
+        pos(0, 0),
+        area(),
+        scale(1),
+        // makes it fall to gravity and jumpable
+        body(),
+        // the custom component we defined above
+        big(),
+        anchor("bot"),
+    ]);
+
+    // action() runs every frame
+    player.onUpdate(() => {
+        player.move(MOVE_SPEED, 0)
+        // center camera to player
+        camPos(player.pos);
+        // check fall death
+        if (player.pos.y >= FALL_DEATH) {
+            go("lose");
         }
+    });
 
-        // jump when user press space
-        onKeyPress("space", jump);
-        onClick(jump);
-
-        function spawnTree() {
-            // add tree obj
-            add([
-                rect(rand(32, 96), 48),
-                area(),
-                outline(4),
-                body({
-                    isStatic: true
-                }),
-                pos(width(), height() - FLOOR_HEIGHT - 64),
-                anchor("botleft"),
-                color(238, 143, 203),
-                move(LEFT, SPEED),
-                offscreen({ destroy: true }),
-                "tree",
-            ]);
-
-            // wait a random amount of time to spawn next tree
-            wait(rand(0.5, 1.5), spawnTree);
+    player.onBeforePhysicsResolve((collision) => {
+        if (collision.target.is(["platform", "soft"]) && player.isJumping()) {
+            collision.preventResolution();
         }
+    });
 
-        // start spawning trees
-        spawnTree();
+    player.onPhysicsResolve(() => {
+        // Set the viewport center to player.pos
+        camPos(player.pos);
+    });
 
-        // lose if player collides with any game obj with tag "tree"
-        // player.onCollide("tree", () => {
-        //     // go to "lose" scene and pass the score
-        //     go("lose", score);
-        //     burp();
-        //     addKaboom(player.pos);
-        // });
+    // if player onCollide with any obj with "danger" tag, lose
+    player.onCollide("danger", () => {
+        go("lose");
+        play("hit");
+    });
 
-        // keep track of score
-        let score = 0;
+    player.onCollide("portal", () => {
+        play("portal");
+        if (levelId + 1 < LEVELS.length) {
+            go("game", {
+                levelId: levelId + 1,
+                coins: coins,
+            });
+        }
+        else {
+            go("win");
+        }
+    });
 
-        const scoreLabel = add([
-            text(score.toString()),
-            pos(24, 24),
-        ]);
+    player.onGround((l) => {
+        if (l.is("enemy")) {
+            player.jump(JUMP_FORCE * 1.5);
+            destroy(l);
+            addKaboom(player.pos);
+            play("powerup");
+        }
+    });
 
-        // increment score every frame
-        onUpdate(() => {
-            score++;
-            scoreLabel.text = score.toString();
-            if (score === 1000) {
-                go("lose", score);
-                burp();
-                addKaboom(player.pos);
-            }
+    player.onCollide("enemy", (e, col) => {
+        // if it's not from the top, die
+        if (!col?.isBottom()) {
+            go("lose");
+            play("hit");
+        }
+    });
+
+    let hasApple = false;
+
+    // grow an apple if player's head bumps into an obj with "prize" tag
+    player.onHeadbutt((obj) => {
+        if (obj.is("prize") && !hasApple) {
+            const apple = level.spawn("#", obj.tilePos.sub(0, 1));
+            apple.jump();
+            hasApple = true;
+            play("blip");
+        }
+    });
+
+    // player grows big onCollide with an "apple" obj
+    player.onCollide("apple", (a) => {
+        destroy(a);
+        // as we defined in the big() component
+        player.biggify(3);
+        hasApple = false;
+        play("powerup");
+    });
+
+    let coinPitch = 0;
+
+    onUpdate(() => {
+        if (coinPitch > 0) {
+            coinPitch = Math.max(0, coinPitch - dt() * 100);
+        }
+    });
+
+    player.onCollide("coin", (c) => {
+        destroy(c);
+        play("coin", {
+            detune: coinPitch,
         });
+        coinPitch += 100;
+        coins += 1;
+        coinsLabel.text = coins;
     });
 
-    scene("lose", (score) => {
-        add([
-            sprite("bean"),
-            pos(width() / 2, height() / 2 - 64),
-            scale(2),
-            anchor("center"),
-        ]);
+    const coinsLabel = add([
+        text(coins),
+        pos(24, 24),
+        fixed(),
+    ]);
 
-        // display score
-        add([
-            text(score),
-            pos(width() / 2, height() / 2 + 64),
-            scale(2),
-            anchor("center"),
-        ]);
+    function jump() {
+        // these 2 functions are provided by body() component
+        if (player.isGrounded()) {
+            player.jump(JUMP_FORCE);
+        }
+    }
 
-        // go back to game with space is pressed
-        onKeyPress("space", () => go("game"));
-        onClick(() => go("game"));
+    // jump with space
+    onKeyPress("space", jump);
+
+    onKeyDown("left", () => {
+        player.move(-MOVE_SPEED, 0);
     });
 
-    go("game");
+    onKeyDown("right", () => {
+        player.move(MOVE_SPEED, 0);
+    });
 
-    return k;
+    onKeyPress("down", () => {
+        player.gravityScale = 3;
+    });
+
+    onKeyRelease("down", () => {
+        player.gravityScale = 1;
+    });
+
+    onGamepadButtonPress("south", jump);
+
+    onGamepadStick("left", (v) => {
+        player.move(v.x * MOVE_SPEED, 0);
+    });
+
+    onKeyPress("f", () => {
+        setFullscreen(!isFullscreen());
+    });
+});
+
+scene("lose", () => {
+    add([
+        text("You Lose"),
+    ]);
+    onKeyPress(() => go("game"));
+});
+
+scene("win", () => {
+    add([
+        text("You Win"),
+    ]);
+    onKeyPress(() => go("game"));
+});
+
+go("game");
+
 }
 
 export default init;
