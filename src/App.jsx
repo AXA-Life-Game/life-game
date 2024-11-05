@@ -35,14 +35,18 @@ function App() {
     // Some handy features for the level editor
     if (editorRef.current) {
       editorRef.current.onkeydown = (e) => {
-        if (e.key === "Delete") {
+        if (!e.ctrlKey) {
           const el = document.activeElement;
           const [start, end] = [el.selectionStart, el.selectionEnd];
-          setTimeout(() => el.setRangeText(" ", start, end, "end"));
-        } else if (e.key.length === 1 && e.key !== " ") {
-          const el = document.activeElement;
-          const [start, end] = [el.selectionStart, el.selectionEnd];
-          el.setRangeText("", start, end + 1, "end");
+          if (e.key === "Delete") {
+            setTimeout(() => el.setRangeText(" ", start, end, "end"));
+          } else if (e.key.length === 1 && e.key !== " ") {
+            if (start === end) {
+              el.setRangeText("", start, end + 1, "end");
+            } else {
+              el.setRangeText(e.key.repeat(end - start - 1), start, end, "end");
+            }
+          }
         }
       };
     }
@@ -62,7 +66,7 @@ function App() {
       <Box>
         <textarea
           ref={editorRef}
-          style={{ width: "50vw", height: "200px" }}
+          style={{ width: "calc(100vw - 2rem)", height: "200px" }}
           value={level.join("\n")}
           onChange={($event) => setLevel($event.target.value?.split("\n"))}
         />
