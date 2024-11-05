@@ -1,12 +1,5 @@
-import kaplay from "kaplay";
-
-const init = (params) => {
+const init = (level) => {
   // @ts-check
-
-  kaplay({
-    ...params,
-    background: [141, 183, 255],
-  });
 
   // load assets
   loadSprite("bean", "https://kaboomjs.com/sprites/bean.png");
@@ -87,22 +80,7 @@ const init = (params) => {
   const MOVE_SPEED = 480;
   const FALL_DEATH = 2400;
 
-  const LEVELS = [
-    [
-      "                             $                                                             ",
-      "                                                                                     $$$  @",
-      "                                                                                   --------",
-      "                                                                                           ",
-      "                                                                    $$                     ",
-      "                                                                   ----                    ",
-      "                                                                                           ",
-      "                    $$                                      ^ $                   $        ",
-      "        $          ===              %                       ----         ---     ---       ",
-      "                                                $                                          ",
-      "                ^   0 =    >                  $                   ^^  0    =   > =        @",
-      "===================================================     ===================================",
-    ],
-  ];
+  const LEVELS = [level];
 
   // define what each symbol means in the level graph
   const levelConf = {
@@ -338,18 +316,21 @@ const init = (params) => {
     add([text("Welcome to the pension game"), pos(24, 24)]);
     add([text("Press any key to start"), pos(24, 64)]);
     onKeyPress(() => go("game"));
+    onClick(() => go("game"));
   });
 
   scene("lose", () => {
     add([text("You Lose"), pos(24, 24)]);
     add([text("Press any key to restart"), pos(24, 64)]);
     onKeyPress(() => go("game"));
+    onClick(() => go("game"));
   });
 
   scene("win", ({ coins }) => {
     add([text(`You Won ${coins} Coins !`), pos(24, 24)]);
     add([text("Press any key to restart"), pos(24, 64)]);
     onKeyPress(() => go("game"));
+    onClick(() => go("game"));
   });
 
   go("start");
