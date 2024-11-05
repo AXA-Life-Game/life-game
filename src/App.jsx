@@ -40,7 +40,7 @@ function App() {
           const [start, end] = [el.selectionStart, el.selectionEnd];
           if (e.key === "Delete") {
             if (start === end) {
-              setTimeout(() => el.setRangeText(" ", start, end, "end"));
+              el.setRangeText(" ", start, end, "end");
             } else {
               el.setRangeText(" ".repeat(end - start), start, end - 1, "end");
             }
