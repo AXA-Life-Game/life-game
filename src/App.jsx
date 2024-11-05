@@ -39,7 +39,11 @@ function App() {
           const el = document.activeElement;
           const [start, end] = [el.selectionStart, el.selectionEnd];
           if (e.key === "Delete") {
-            setTimeout(() => el.setRangeText(" ", start, end, "end"));
+            if (start === end) {
+              setTimeout(() => el.setRangeText(" ", start, end, "end"));
+            } else {
+              el.setRangeText(" ".repeat(end - start), start, end - 1, "end");
+            }
           } else if (e.key.length === 1 && e.key !== " ") {
             if (start === end) {
               el.setRangeText("", start, end + 1, "end");
