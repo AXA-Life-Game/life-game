@@ -64,13 +64,13 @@ function App() {
 
   return (
     <Stack justifyContent={"center"} alignItems={"center"} gap={"1rem"}>
-      <Box height={800} width={"100vw"}>
+      <Box height={"70vh"} width={"100vw"}>
         <canvas ref={canvasRef} width="100%" height="100%" />
       </Box>
       <Box>
         <textarea
           ref={editorRef}
-          style={{ width: "calc(100vw - 2rem)", height: "200px" }}
+          style={{ width: "calc(100vw - 2rem)", height: "calc(20vh - 2rem)" }}
           value={level.join("\n")}
           onChange={($event) => setLevel($event.target.value?.split("\n"))}
         />
