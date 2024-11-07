@@ -3,7 +3,7 @@ const init = (level) => {
 
   // load assets
   loadSprite("axaLogo", "./src/assets/axa-logo.svg.png");
-  loadSprite("pinky", "./src/assets/pinky/run-32x32.png", {
+  loadSprite("pinky", "./src/assets/pink-man-run-32x32.png", {
     sliceX: 12,
     sliceY: 0,
     anims: {
