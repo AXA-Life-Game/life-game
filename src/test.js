@@ -2,14 +2,15 @@ const init = (level) => {
   // @ts-check
 
   // load assets
-  loadSprite("bean", "https://kaboomjs.com/sprites/bean.png");
-  loadSprite("bag", "https://kaboomjs.com/sprites/bag.png");
+  loadSprite("axaLogo", "./src/assets/axa-logo.svg.png");
+  loadSprite("dino", "https://kaboomjs.com/sprites/dino.png");
+  loadSprite("mushroom", "https://kaboomjs.com/sprites/mushroom.png");
   loadSprite("ghosty", "https://kaboomjs.com/sprites/ghosty.png");
   loadSprite("spike", "https://kaboomjs.com/sprites/spike.png");
   loadSprite("grass", "https://kaboomjs.com/sprites/grass.png");
   loadSprite("steel", "https://kaboomjs.com/sprites/steel.png");
   loadSprite("prize", "https://kaboomjs.com/sprites/jumpy.png");
-  loadSprite("apple", "https://kaboomjs.com/sprites/apple.png");
+  loadSprite("apple", "https://kaboomjs.com/sprites/meat.png");
   loadSprite("portal", "https://kaboomjs.com/sprites/portal.png");
   loadSprite("coin", "https://kaboomjs.com/sprites/coin.png");
   loadSound("coin", "https://kaboomjs.com/examples/sounds/score.mp3");
@@ -104,7 +105,7 @@ const init = (level) => {
         "platform",
       ],
       0: () => [
-        sprite("bag"),
+        sprite("mushroom"),
         area(),
         body({ isStatic: true }),
         offscreen({ hide: true }),
@@ -120,7 +121,7 @@ const init = (level) => {
         "coin",
       ],
       "%": () => [
-        sprite("prize"),
+        sprite("axaLogo"),
         area(),
         body({ isStatic: true }),
         anchor("bot"),
@@ -154,7 +155,7 @@ const init = (level) => {
       ],
       "@": () => [
         sprite("portal"),
-        area({ scale: 0.5 }),
+        area(),
         anchor("bot"),
         pos(0, -12),
         offscreen({ hide: true }),
@@ -169,7 +170,7 @@ const init = (level) => {
 
     // define player object
     const player = add([
-      sprite("bean"),
+      sprite("dino"),
       pos(0, 0),
       area(),
       scale(1),
