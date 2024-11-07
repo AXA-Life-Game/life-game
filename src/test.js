@@ -3,6 +3,18 @@ const init = (level) => {
 
   // load assets
   loadSprite("axaLogo", "./src/assets/axa-logo.svg.png");
+  loadSprite("pinky", "./src/assets/pinky/run-32x32.png", {
+    sliceX: 12,
+    sliceY: 0,
+    anims: {
+      run: {
+        from: 0,
+        to: 11,
+        loop: true,
+        speed: 30
+      }
+    }
+  });
   loadSprite("dino", "https://kaboomjs.com/sprites/dino.png");
   loadSprite("mushroom", "https://kaboomjs.com/sprites/mushroom.png");
   loadSprite("ghosty", "https://kaboomjs.com/sprites/ghosty.png");
@@ -40,41 +52,41 @@ const init = (level) => {
   }
 
   // custom component that makes stuff grow big
-  function big() {
-    let timer = 0;
-    let isBig = false;
-    let destScale = 1;
-    return {
-      // component id / name
-      id: "big",
-      // it requires the scale component
-      require: ["scale"],
-      // this runs every frame
-      update() {
-        if (isBig) {
-          timer -= dt();
-          if (timer <= 0) {
-            this.smallify();
-          }
+function big(initialScale = 1, secondScale = 2) {
+  let timer = 0;
+  let isBig = false;
+  let destScale = initialScale;
+  return {
+    // component id / name
+    id: "big",
+    // it requires the scale component
+    require: ["scale"],
+    // this runs every frame
+    update() {
+      if (isBig) {
+        timer -= dt();
+        if (timer <= 0) {
+          this.smallify();
         }
-        this.scale = this.scale.lerp(vec2(destScale), dt() * 6);
-      },
-      // custom methods
-      isBig() {
-        return isBig;
-      },
-      smallify() {
-        destScale = 1;
-        timer = 0;
-        isBig = false;
-      },
-      biggify(time) {
-        destScale = 2;
-        timer = time;
-        isBig = true;
-      },
-    };
-  }
+      }
+      this.scale = this.scale.lerp(vec2(destScale), dt() * 6);
+    },
+    // custom methods
+    isBig() {
+      return isBig;
+    },
+    smallify() {
+      destScale = initialScale;
+      timer = 0;
+      isBig = false;
+    },
+    biggify(time) {
+      destScale = secondScale;
+      timer = time;
+      isBig = true;
+    },
+  };
+}
 
   // define some constants
   const JUMP_FORCE = 1320;
@@ -170,14 +182,14 @@ const init = (level) => {
 
     // define player object
     const player = add([
-      sprite("dino"),
+      sprite("pinky", {anim: "run"}),
       pos(0, 0),
       area(),
-      scale(1),
+      scale(2),
       // makes it fall to gravity and jumpable
       body(),
       // the custom component we defined above
-      big(),
+      big(2,4),
       anchor("bot"),
     ]);
 
