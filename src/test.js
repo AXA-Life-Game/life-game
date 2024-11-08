@@ -1,9 +1,12 @@
+import axaLogo from './assets/axa-logo.svg.png';
+import pinky from './assets/pink-man-run-32x32.png';
+
 const init = (level) => {
   // @ts-check
 
   // load assets
-  loadSprite("axaLogo", "./src/assets/axa-logo.svg.png");
-  loadSprite("pinky", "./src/assets/pink-man-run-32x32.png", {
+  loadSprite("axaLogo", axaLogo);
+  loadSprite("pinky", pinky, {
     sliceX: 12,
     sliceY: 0,
     anims: {
