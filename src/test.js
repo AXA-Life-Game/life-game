@@ -95,6 +95,8 @@ const init = (level) => {
   const JUMP_FORCE = 1320;
   const MOVE_SPEED = 480;
   const FALL_DEATH = 2400;
+  // distance between player and the border of the screen
+  const PADDING = 100;
 
   const LEVELS = [level];
 
@@ -197,12 +199,10 @@ const init = (level) => {
     ]);
 
     function updateCamPos() {
-      // defines the distance of the player from the borders of the screen
-      const padding = 100;
       const levelHeight = (level.numRows() - 2) * level.tileHeight();
-      const heightOffset = levelHeight + padding - height() / 2;
-      const widthOffset = width() / 2 - padding;
-      const roof = levelHeight + 2 * level.tileHeight() + padding - height();
+      const heightOffset = levelHeight + PADDING - height() / 2;
+      const widthOffset = width() / 2 - PADDING;
+      const roof = levelHeight + 2 * level.tileHeight() + PADDING - height();
       const floor = levelHeight + level.tileHeight();
 
       // center camera to player if player is too high or too low
