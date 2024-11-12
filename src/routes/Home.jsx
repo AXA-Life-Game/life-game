@@ -2,6 +2,7 @@ import {useEffect, useState} from "react";
 import Loader from "../components/Loader.jsx";
 import {Stack} from "@mui/system";
 import Button from "../components/Button.jsx";
+import Score from "../components/Score.jsx"
 
 const Home = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -22,6 +23,9 @@ const Home = () => {
             {isLoading && <Loader/>}
 
             <Button>Start</Button>
+
+            <Score/>
+            <Button>Zurück zum Hauptmenü</Button>
         </Stack>
     )
 }
