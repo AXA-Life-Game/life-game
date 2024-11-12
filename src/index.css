@@ -1,5 +1,5 @@
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: Bungee, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -74,4 +74,16 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+@font-face{
+  font-family: "Bungee";
+  src:local("Bungee-Regular"),
+  url('./assets/fonts/Bungee-Regular.ttf') 
+}
+
+@font-face{
+  font-family: "Jersey25";
+  src:local("Jersey25-Regular"),
+  url('./assets/fonts/Jersey25-Regular.ttf') 
 }
