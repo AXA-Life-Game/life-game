@@ -7,6 +7,7 @@ const CardContent = ({ children }) => {
         padding: 2,
         fontSize: "18px",
         backgroundColor: "#fff",
+        color: "#333",
       }}
     >
       {children}
