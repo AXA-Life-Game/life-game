@@ -1,10 +1,12 @@
 import axaLogo from "./assets/axa-logo.svg.png";
 import pinky from "./assets/pink-man-run-32x32.png";
+import background from "./assets/background.png";
 
 const init = (level) => {
   // @ts-check
 
   // load assets
+  loadSprite("background", background);
   loadSprite("axaLogo", axaLogo);
   loadSprite("pinky", pinky, {
     sliceX: 12,
@@ -55,7 +57,7 @@ const init = (level) => {
   }
 
   // custom component that makes stuff grow big
-  function big(initialScale = 1, secondScale = 2) {
+  function big(initialScale = 2, secondScale = 4) {
     let timer = 0;
     let isBig = false;
     let destScale = initialScale;
@@ -94,7 +96,7 @@ const init = (level) => {
   // define some constants
   const JUMP_FORCE = 1320;
   const MOVE_SPEED = 480;
-  const FALL_DEATH = 2400;
+  const FALL_DEATH = 150;
   // distance between player and the border of the screen
   const PADDING = 100;
 
@@ -198,8 +200,30 @@ const init = (level) => {
       anchor("bot"),
     ]);
 
+    // define player object
+    const kid = add([
+      sprite("pinky", { anim: "run" }),
+      pos(0, 0),
+      area(),
+      scale(1),
+      // makes it fall to gravity and jumpable
+      body(),
+      // the custom component we defined above
+      big(1, 2),
+      anchor("bot"),
+    ]);
+
+    const levelHeight = (level.numRows() - 2) * level.tileHeight();
+
+    // add background
+    const background = add([
+      sprite("background", { width: 6000 }),
+      pos(-width() / 2, levelHeight - 1000),
+      opacity(0.6),
+      layer("background"),
+    ]);
+
     function updateCamPos() {
-      const levelHeight = (level.numRows() - 2) * level.tileHeight();
       const heightOffset = levelHeight + PADDING - height() / 2;
       const widthOffset = width() / 2 - PADDING;
       const roof = levelHeight + 2 * level.tileHeight() + PADDING - height();
@@ -216,11 +240,14 @@ const init = (level) => {
     }
     // action() runs every frame
     player.onUpdate(() => {
+      kid.pos.y = player.pos.y;
+      kid.pos.x = player.pos.x - player.scale.x * 32;
       player.move(MOVE_SPEED, 0);
+      background.move(MOVE_SPEED * 0.8, 0);
       // center camera to player
       updateCamPos();
       // check fall death
-      if (player.pos.y >= FALL_DEATH) {
+      if (player.pos.y >= levelHeight + FALL_DEATH) {
         go("lose");
       }
     });
@@ -345,6 +372,8 @@ const init = (level) => {
     onKeyPress("backspace", () => go("lose"));
     onKeyPress("escape", () => go("lose"));
   });
+
+  layers(["background", "game"], "game");
 
   scene("start", () => {
     add([text("Welcome to the pension game"), pos(24, 24)]);

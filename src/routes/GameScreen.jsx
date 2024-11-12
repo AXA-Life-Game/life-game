@@ -28,7 +28,7 @@ const GameScreen = () => {
     if (canvasRef.current) {
       kaplay({
         canvas: canvasRef.current,
-        background: [141, 183, 255],
+        background: [10, 152, 172],
       });
     }
     // Some handy features for the level editor
