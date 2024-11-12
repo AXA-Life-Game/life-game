@@ -336,14 +336,14 @@ function big(initialScale = 1, secondScale = 2) {
   });
 
   scene("lose", () => {
-    add([text("You Lose"), pos(24, 24)]);
+    add([text("You lose"), pos(24, 24)]);
     add([text("Press any key to restart"), pos(24, 64)]);
     onKeyPress(() => go("game"));
     onClick(() => go("game"));
   });
 
   scene("win", ({ coins }) => {
-    add([text(`You Won ${coins} Coins !`), pos(24, 24)]);
+    add([text(`You won ${coins} coins !`), pos(24, 24)]);
     add([text("Press any key to restart"), pos(24, 64)]);
     onKeyPress(() => go("game"));
     onClick(() => go("game"));
