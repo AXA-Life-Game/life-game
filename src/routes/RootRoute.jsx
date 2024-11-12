@@ -1,7 +1,7 @@
 const RootRoute = () => {
     return (
         <div>
-
+            Route
         </div>
     )
 }
