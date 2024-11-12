@@ -1,28 +1,12 @@
-import { createRef, useEffect, useState } from "react";
-import init from "../test.js";
-import { Box, Stack } from "@mui/system";
+import { createRef, useEffect } from "react";
+import init from "../game.js";
+import { Box } from "@mui/system";
 import kaplay from "kaplay";
-
-const defaultLevel = [
-  "                             $                                                             ",
-  "                                                                                     $$$  @",
-  "                                                                                   --------",
-  "                                                                                           ",
-  "                                                                    $$                     ",
-  "                                                                   ----                    ",
-  "                                                                                           ",
-  "                    $$                                      ^ $                   $        ",
-  "        $          ===              %                       ----         ---     ---       ",
-  "                                                $                                          ",
-  "                ^   0 =    >      b           $                   ^^  0    =   > =        @",
-  "===================================================     ===================================",
-];
 
 const GameScreen = () => {
   const canvasRef = createRef();
   const kaplayRef = createRef();
   const editorRef = createRef();
-  const [level] = useState(defaultLevel);
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -57,9 +41,9 @@ const GameScreen = () => {
 
   useEffect(() => {
     if (canvasRef.current) {
-      kaplayRef.current = init(level);
+      kaplayRef.current = init();
     }
-  }, [level]);
+  }, []);
 
   return (
     <Box height={"100vh"} width={"100vw"}>
