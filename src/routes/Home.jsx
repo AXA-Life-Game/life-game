@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import Loader from "../components/Loader.jsx";
 import {Stack} from "@mui/system";
+import Button from "../components/Button.jsx";
 
 const Home = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -19,6 +20,8 @@ const Home = () => {
             height: '100%'
         }}>
             {isLoading && <Loader/>}
+
+            <Button>Start</Button>
         </Stack>
     )
 }
