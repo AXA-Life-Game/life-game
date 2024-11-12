@@ -9,7 +9,7 @@ export const itemsConfig = {
       area(),
       body({ isStatic: true }),
       anchor("bot"),
-      offscreen({ hide: true }),
+      offscreen({ destroy: true }),
       "platform",
     ],
     b: () => [

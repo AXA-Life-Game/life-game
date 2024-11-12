@@ -2,18 +2,12 @@ import { big } from "./game-animations";
 import { itemsConfig } from "./items-config";
 
 const defaultLevel = [
-  "                             $                                                             ",
-  "                                                                                     $$$  @",
-  "                                                                                   --------",
-  "                                                                                           ",
-  "                                                                    $$                     ",
-  "                                                                   ----                    ",
-  "                                                                                           ",
-  "                    $$                                      ^ $                   $        ",
-  "        $          ===              %                       ----         ---     ---       ",
-  "                                                $                                          ",
-  "                ^   0 =    >      b           $                   ^^  0    =   > =        @",
-  "===================================================     ===================================",
+  "                                                                         $$$$   ",
+  "                                                                        --------",
+  "                   ===              %                   ---     ---             ",
+  "                                                                                ",
+  "                ^   0 =      b                   ^^  0    =   > =        ^^     ",
+  "==============================",
 ];
 
 export function initGameScene(sceneName) {
@@ -24,11 +18,15 @@ export function initGameScene(sceneName) {
     const FALL_DEATH = 300;
     // distance between player and the border of the screen
     const PADDING = 100;
+    const GAME_DURATION = 30;
 
     const LEVELS = [defaultLevel];
 
     // add level to scene
     const level = addLevel(LEVELS[levelId ?? 0], itemsConfig);
+
+    // wait for some time and trigger the win
+    wait(GAME_DURATION, () => go("win", { coins }));
 
     // define player object
     const player = add([
@@ -56,6 +54,18 @@ export function initGameScene(sceneName) {
       layer("background"),
     ]);
 
+    function spawnRandomCoin(tilePosX, tileWidth) {
+      const rng = rand(0, 1);
+      // a coin has a 25% chance to spawn every block
+      if (rng > 0.75) {
+        level.spawn(
+          "$",
+          tilePosX + tileWidth,
+          level.numRows() - Math.floor(rand(2, 5))
+        );
+      }
+    }
+
     function updateCamPos() {
       const heightOffset = levelHeight + PADDING - height() / 2;
       const widthOffset = width() / 2 - PADDING;
@@ -71,6 +81,8 @@ export function initGameScene(sceneName) {
         camPos(player.pos.x + widthOffset, heightOffset);
       }
     }
+
+    let currentTile = 0;
     // action() runs every frame
     player.onUpdate(() => {
       if (baby) {
@@ -84,6 +96,14 @@ export function initGameScene(sceneName) {
       // check fall death
       if (player.pos.y >= levelHeight + FALL_DEATH) {
         go("lose");
+      }
+      // spawning a new floor every tile
+      const tilePosX = Math.floor(player.pos.x / 64);
+      const tileWidth = Math.floor(width() / 64);
+      if (currentTile < tilePosX) {
+        level.spawn("=", tilePosX + tileWidth, level.numRows() - 1);
+        currentTile = tilePosX;
+        spawnRandomCoin(tilePosX, tileWidth);
       }
     });
 
@@ -165,6 +185,7 @@ export function initGameScene(sceneName) {
 
     // grow an apple if player's head bumps into an obj with "prize" tag
     player.onHeadbutt((obj) => {
+      console.log(obj.tilePos);
       if (obj.is("prize") && !hasApple) {
         const apple = level.spawn("#", obj.tilePos.sub(-6, 0));
         apple.jump();
