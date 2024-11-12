@@ -1,5 +1,6 @@
 import axaLogo from "./assets/axa-logo.svg.png";
-import pinky from "./assets/pink-man-run-32x32.png";
+import larry from "./assets/larry-man-blue-walk.png";
+import babyLarry from "./assets/larry-man-blue-360.png";
 import background from "./assets/background.png";
 
 const init = (level) => {
@@ -8,15 +9,27 @@ const init = (level) => {
   // load assets
   loadSprite("background", background);
   loadSprite("axaLogo", axaLogo);
-  loadSprite("pinky", pinky, {
-    sliceX: 12,
+  loadSprite("larry", larry, {
+    sliceX: 4,
     sliceY: 0,
     anims: {
       run: {
         from: 0,
-        to: 11,
+        to: 3,
         loop: true,
-        speed: 30,
+        speed: 15,
+      },
+    },
+  });
+  loadSprite("babyLarry", babyLarry, {
+    sliceX: 8,
+    sliceY: 0,
+    anims: {
+      spin: {
+        from: 0,
+        to: 7,
+        loop: true,
+        speed: 15,
       },
     },
   });
@@ -57,7 +70,7 @@ const init = (level) => {
   }
 
   // custom component that makes stuff grow big
-  function big(initialScale = 2, secondScale = 4) {
+  function big(initialScale = 1, secondScale = 2) {
     let timer = 0;
     let isBig = false;
     let destScale = initialScale;
@@ -96,7 +109,7 @@ const init = (level) => {
   // define some constants
   const JUMP_FORCE = 1320;
   const MOVE_SPEED = 480;
-  const FALL_DEATH = 150;
+  const FALL_DEATH = 300;
   // distance between player and the border of the screen
   const PADDING = 100;
 
@@ -114,6 +127,15 @@ const init = (level) => {
         anchor("bot"),
         offscreen({ hide: true }),
         "platform",
+      ],
+      b: () => [
+        sprite("babyLarry", { anim: "spin" }),
+        area(),
+        body({ isStatic: true }),
+        scale(1.5),
+        anchor("bot"),
+        offscreen({ hide: true }),
+        "baby",
       ],
       "-": () => [
         sprite("steel"),
@@ -189,7 +211,7 @@ const init = (level) => {
 
     // define player object
     const player = add([
-      sprite("pinky", { anim: "run" }),
+      sprite("larry", { anim: "run" }),
       pos(0, 0),
       area(),
       scale(2),
@@ -201,24 +223,14 @@ const init = (level) => {
     ]);
 
     // define player object
-    const kid = add([
-      sprite("pinky", { anim: "run" }),
-      pos(0, 0),
-      area(),
-      scale(1),
-      // makes it fall to gravity and jumpable
-      body(),
-      // the custom component we defined above
-      big(1, 2),
-      anchor("bot"),
-    ]);
+    let baby = undefined;
 
     const levelHeight = (level.numRows() - 2) * level.tileHeight();
 
     // add background
     const background = add([
       sprite("background", { width: 6000 }),
-      pos(-width() / 2, levelHeight - 1000),
+      pos(-width() / 2, levelHeight - 800),
       opacity(0.6),
       layer("background"),
     ]);
@@ -240,8 +252,10 @@ const init = (level) => {
     }
     // action() runs every frame
     player.onUpdate(() => {
-      kid.pos.y = player.pos.y;
-      kid.pos.x = player.pos.x - player.scale.x * 32;
+      if (baby) {
+        baby.pos.y = player.pos.y;
+        baby.pos.x = player.pos.x - player.scale.x * 32;
+      }
       player.move(MOVE_SPEED, 0);
       background.move(MOVE_SPEED * 0.8, 0);
       // center camera to player
@@ -300,6 +314,22 @@ const init = (level) => {
         go("lose");
         play("hit");
       }
+    });
+
+    player.onCollide("baby", (e) => {
+      destroy(e);
+      // if it's not from the top, die
+      baby = add([
+        sprite("larry", { anim: "run" }),
+        pos(0, 0),
+        area(),
+        scale(1),
+        // makes it fall to gravity and jumpable
+        body(),
+        // the custom component we defined above
+        big(1, 2),
+        anchor("bot"),
+      ]);
     });
 
     player.onCollide("jumper", (e, col) => {
