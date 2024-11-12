@@ -1,5 +1,5 @@
-import axaLogo from './assets/axa-logo.svg.png';
-import pinky from './assets/pink-man-run-32x32.png';
+import axaLogo from "./assets/axa-logo.svg.png";
+import pinky from "./assets/pink-man-run-32x32.png";
 
 const init = (level) => {
   // @ts-check
@@ -14,9 +14,9 @@ const init = (level) => {
         from: 0,
         to: 11,
         loop: true,
-        speed: 30
-      }
-    }
+        speed: 30,
+      },
+    },
   });
   loadSprite("dino", "https://kaboomjs.com/sprites/dino.png");
   loadSprite("mushroom", "https://kaboomjs.com/sprites/mushroom.png");
@@ -55,41 +55,41 @@ const init = (level) => {
   }
 
   // custom component that makes stuff grow big
-function big(initialScale = 1, secondScale = 2) {
-  let timer = 0;
-  let isBig = false;
-  let destScale = initialScale;
-  return {
-    // component id / name
-    id: "big",
-    // it requires the scale component
-    require: ["scale"],
-    // this runs every frame
-    update() {
-      if (isBig) {
-        timer -= dt();
-        if (timer <= 0) {
-          this.smallify();
+  function big(initialScale = 1, secondScale = 2) {
+    let timer = 0;
+    let isBig = false;
+    let destScale = initialScale;
+    return {
+      // component id / name
+      id: "big",
+      // it requires the scale component
+      require: ["scale"],
+      // this runs every frame
+      update() {
+        if (isBig) {
+          timer -= dt();
+          if (timer <= 0) {
+            this.smallify();
+          }
         }
-      }
-      this.scale = this.scale.lerp(vec2(destScale), dt() * 6);
-    },
-    // custom methods
-    isBig() {
-      return isBig;
-    },
-    smallify() {
-      destScale = initialScale;
-      timer = 0;
-      isBig = false;
-    },
-    biggify(time) {
-      destScale = secondScale;
-      timer = time;
-      isBig = true;
-    },
-  };
-}
+        this.scale = this.scale.lerp(vec2(destScale), dt() * 6);
+      },
+      // custom methods
+      isBig() {
+        return isBig;
+      },
+      smallify() {
+        destScale = initialScale;
+        timer = 0;
+        isBig = false;
+      },
+      biggify(time) {
+        destScale = secondScale;
+        timer = time;
+        isBig = true;
+      },
+    };
+  }
 
   // define some constants
   const JUMP_FORCE = 1320;
@@ -185,22 +185,40 @@ function big(initialScale = 1, secondScale = 2) {
 
     // define player object
     const player = add([
-      sprite("pinky", {anim: "run"}),
+      sprite("pinky", { anim: "run" }),
       pos(0, 0),
       area(),
       scale(2),
       // makes it fall to gravity and jumpable
       body(),
       // the custom component we defined above
-      big(2,4),
+      big(2, 4),
       anchor("bot"),
     ]);
 
+    function updateCamPos() {
+      // defines the distance of the player from the borders of the screen
+      const padding = 100;
+      const levelHeight = (level.numRows() - 2) * level.tileHeight();
+      const heightOffset = levelHeight + padding - height() / 2;
+      const widthOffset = width() / 2 - padding;
+      const roof = levelHeight + 2 * level.tileHeight() + padding - height();
+      const floor = levelHeight + level.tileHeight();
+
+      // center camera to player if player is too high or too low
+      if (player.pos.y < roof) {
+        camPos(player.pos.x + widthOffset, player.pos.y + heightOffset - roof);
+      } else if (player.pos.y > floor) {
+        camPos(player.pos.x + widthOffset, player.pos.y + heightOffset - floor);
+      } else {
+        camPos(player.pos.x + widthOffset, heightOffset);
+      }
+    }
     // action() runs every frame
     player.onUpdate(() => {
       player.move(MOVE_SPEED, 0);
       // center camera to player
-      camPos(player.pos);
+      updateCamPos();
       // check fall death
       if (player.pos.y >= FALL_DEATH) {
         go("lose");
@@ -215,7 +233,7 @@ function big(initialScale = 1, secondScale = 2) {
 
     player.onPhysicsResolve(() => {
       // Set the viewport center to player.pos
-      camPos(player.pos);
+      updateCamPos();
     });
 
     // if player onCollide with any obj with "danger" tag, lose
