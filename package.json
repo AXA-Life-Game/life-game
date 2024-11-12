@@ -15,6 +15,7 @@
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.6",
     "@mui/system": "^6.1.6",
     "@react-spring/web": "^9.7.5",
     "kaplay": "^3001.0.2",
