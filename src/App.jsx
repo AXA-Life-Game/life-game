@@ -3,10 +3,15 @@ import Scoreboard from "./routes/Scoreboard.jsx";
 import GameScreen from "./routes/GameScreen.jsx";
 import Home from "./routes/Home.jsx";
 import Layout from "./components/Layout.jsx";
+import {Box} from "@mui/system";
 
 export default function App() {
   return (
-      <div>
+      <Box sx={{
+          width: '100%',
+          height: '100%',
+          background: '#9FD9B4'
+      }}>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
@@ -16,7 +21,7 @@ export default function App() {
             <Route path="*" element={<NoMatch />} />
           </Route>
         </Routes>
-      </div>
+      </Box>
   );
 }
 
