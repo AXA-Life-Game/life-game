@@ -222,7 +222,7 @@ export function initGameScene(sceneName) {
       // if player onCollide with any obj with "danger" tag, lose
       player.onCollide("danger", () => {
         money -= 1000;
-        play("hit");
+        play("portal");
         flicker(player);
       });
 
@@ -283,7 +283,7 @@ export function initGameScene(sceneName) {
         coinsLabel.text = money;
       });
 
-      player.onCollide("baby", (e) => {
+      player.onCollide("baby", () => {
         // if it's not from the top, die
         baby = add([
           sprite("babyLarry", { anim: "run" }),

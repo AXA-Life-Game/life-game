@@ -57,9 +57,9 @@ apartmentLifeEvent.effect = {
 };
 
 const householdLiabilityInsuranceEvent = new LifeEvent();
-apartmentLifeEvent.type = "HOUSEHOLD_INSURANCE";
-apartmentLifeEvent.frequency = { limit: 0 };
-apartmentLifeEvent.effect = {
+householdLiabilityInsuranceEvent.type = "HOUSEHOLD_INSURANCE";
+householdLiabilityInsuranceEvent.frequency = { limit: 0 };
+householdLiabilityInsuranceEvent.effect = {
   lifebars: [new Lifebar("EXPENSES", 100)],
   lifeEvents: [
     {
@@ -72,9 +72,9 @@ apartmentLifeEvent.effect = {
 };
 
 const threeAInsuranceEvent = new LifeEvent();
-apartmentLifeEvent.type = "3A_INSURANCE";
-apartmentLifeEvent.frequency = { limit: 0 };
-apartmentLifeEvent.effect = {
+threeAInsuranceEvent.type = "3A_INSURANCE";
+threeAInsuranceEvent.frequency = { limit: 3 };
+threeAInsuranceEvent.effect = {
   lifebars: [
     new Lifebar("MONEY", -2000),
     new Lifebar("THIRDPILLAR", 2000),
@@ -84,9 +84,9 @@ apartmentLifeEvent.effect = {
 };
 
 const marriageEvent = new LifeEvent();
-apartmentLifeEvent.type = "MARRIAGE";
-apartmentLifeEvent.frequency = { limit: 0 };
-apartmentLifeEvent.effect = {
+marriageEvent.type = "MARRIAGE";
+marriageEvent.frequency = { limit: 0 };
+marriageEvent.effect = {
   lifebars: [new Lifebar("INCOME", 6000), new Lifebar("TAX", 800)],
   lifeEvents: [
     {
@@ -111,10 +111,14 @@ apartmentLifeEvent.effect = {
 };
 
 const kidsEvent = new LifeEvent();
-apartmentLifeEvent.type = "KIDS";
-apartmentLifeEvent.frequency = { limit: 0 };
-apartmentLifeEvent.effect = {
-  lifebars: [new Lifebar("INCOME", 250), new Lifebar("TAX", -300)],
+kidsEvent.type = "KIDS";
+kidsEvent.frequency = { limit: 0 };
+kidsEvent.effect = {
+  lifebars: [
+    new Lifebar("INCOME", 250),
+    new Lifebar("TAX", -300),
+    new Lifebar("EXPENSES", 1500),
+  ],
   lifeEvents: [
     {
       type: "KIDS",
@@ -126,9 +130,9 @@ apartmentLifeEvent.effect = {
 };
 
 const partTimeEvent = new LifeEvent();
-apartmentLifeEvent.type = "KIDS";
-apartmentLifeEvent.frequency = { limit: 0 };
-apartmentLifeEvent.effect = {
+partTimeEvent.type = "KIDS";
+partTimeEvent.frequency = { limit: 0 };
+partTimeEvent.effect = {
   lifebars: [new Lifebar("INCOME", -1500), new Lifebar("TAX", -200)],
   lifeEvents: [
     {
@@ -141,18 +145,18 @@ apartmentLifeEvent.effect = {
 };
 
 const secondPillarEvent = new LifeEvent();
-apartmentLifeEvent.type = "KIDS";
-apartmentLifeEvent.frequency = { limit: 0 };
-apartmentLifeEvent.effect = {
+secondPillarEvent.type = "KIDS";
+secondPillarEvent.frequency = { limit: 0 };
+secondPillarEvent.effect = {
   lifebars: [new Lifebar("MONEY", -20000), new Lifebar("TAX", -3000)],
   lifeEvents: [],
 };
 
 // followed by additional life event salary increase
 const educationEvent = new LifeEvent();
-apartmentLifeEvent.type = "EDUCATION";
-apartmentLifeEvent.frequency = { limit: 0 };
-apartmentLifeEvent.effect = {
+educationEvent.type = "EDUCATION";
+educationEvent.frequency = { limit: 2 };
+educationEvent.effect = {
   lifebars: [new Lifebar("MONEY", -20000), new Lifebar("TAX", -3000)],
   lifeEvents: [
     {
@@ -165,11 +169,95 @@ apartmentLifeEvent.effect = {
 };
 
 const salaryIncreaseEvent = new LifeEvent();
-apartmentLifeEvent.type = "SALARY_INCREASE";
-apartmentLifeEvent.frequency = { limit: 0 };
-apartmentLifeEvent.effect = {
+salaryIncreaseEvent.type = "SALARY_INCREASE";
+salaryIncreaseEvent.frequency = { limit: 0 };
+salaryIncreaseEvent.effect = {
   lifebars: [new Lifebar("MONEY", 1000)],
   lifeEvents: [],
+};
+
+const buyHouseEvent = new LifeEvent();
+buyHouseEvent.type = "HOUSE";
+buyHouseEvent.frequency = { limit: 0 };
+buyHouseEvent.effect = {
+  lifebars: [new Lifebar("MONEY", -200000), new Lifebar("EXPENSES", 750)],
+  lifeEvents: [],
+};
+
+const houseInsuranceEvent = new LifeEvent();
+houseInsuranceEvent.type = "HOUSE_INSURANCE";
+houseInsuranceEvent.frequency = { limit: 0 };
+houseInsuranceEvent.effect = {
+  lifebars: [new Lifebar("EXPENSES", 100)],
+  lifeEvents: [
+    {
+      type: "HOUSE_INSURANCE",
+      frequency: {
+        limit: 0,
+      },
+    },
+  ],
+};
+
+//followed by additional life event 2nd pillar
+const lotteryEvent = new LifeEvent();
+lotteryEvent.type = "LOTTERY";
+lotteryEvent.frequency = { limit: 0.2 };
+lotteryEvent.effect = {
+  lifebars: [new Lifebar("MONEY", 200000)],
+  lifeEvents: [
+    {
+      type: "SECOND_PILLAR",
+      frequency: {
+        limit: 1,
+      },
+    },
+  ],
+};
+
+const robberyEvent = new LifeEvent();
+robberyEvent.type = "ROBBERY";
+robberyEvent.frequency = { limit: 2 };
+robberyEvent.effect = {
+  lifebars: [new Lifebar("MONEY", -5000)],
+  lifeEvents: [],
+};
+
+const floodingEvent = new LifeEvent();
+floodingEvent.type = "FLOODING";
+floodingEvent.frequency = { limit: 3 };
+floodingEvent.effect = {
+  lifebars: [new Lifebar("MONEY", -5000)],
+  lifeEvents: [],
+};
+
+const divorceEvent = new LifeEvent();
+divorceEvent.type = "DIVORCE";
+divorceEvent.frequency = { limit: 0 };
+divorceEvent.effect = {
+  lifebars: [],
+  lifeEvents: [],
+};
+
+const jobLossEvent = new LifeEvent();
+jobLossEvent.type = "JOB_LOSS";
+jobLossEvent.frequency = { limit: 1 };
+jobLossEvent.effect = {
+  lifebars: [new Lifebar("INCOME", -20)],
+  lifeEvents: [
+    {
+      type: "JOB",
+      frequency: {
+        limit: 3,
+      },
+    },
+    {
+      type: "JOB_LOSS",
+      frequency: {
+        limit: 1,
+      },
+    },
+  ],
 };
 
 export const gameEngine = (): GameEngine => {
@@ -184,5 +272,12 @@ export const gameEngine = (): GameEngine => {
     secondPillarEvent,
     educationEvent,
     salaryIncreaseEvent,
+    buyHouseEvent,
+    houseInsuranceEvent,
+    lotteryEvent,
+    robberyEvent,
+    floodingEvent,
+    jobLossEvent,
+    divorceEvent,
   ]);
 };
