@@ -1,12 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { Box, Stack } from "@mui/system";
 import Button from "../components/Button.jsx";
-import { useNavigate } from "react-router-dom";
-import { useFullscreen, useToggle } from "react-use";
-import Logo from "../components/Logo.jsx";
-import { animated, config, useSpring } from "@react-spring/web";
+import { animated } from "@react-spring/web";
 import GameMenu from "../components/GameMenu.jsx";
-import Timeline from "../components/Timeline.jsx";
 
 const AnimatedButton = animated(Button);
 

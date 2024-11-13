@@ -69,7 +69,16 @@ const Logo = () => {
         </svg>
       </Box>
 
-      <animated.img src={LogoText} width={512} style={props} />
+      <Box
+        sx={{
+          width: {
+            xs: 256,
+            sm: 512,
+          },
+        }}
+      >
+        <animated.img src={LogoText} width={"100%"} style={props} />
+      </Box>
     </Box>
   );
 };
