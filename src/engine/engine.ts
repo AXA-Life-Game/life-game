@@ -200,16 +200,62 @@ export class GameEngine {
   }
 
   public generateNuggets(): NuggetType[] {
-    return [
-      "PillarpaymentPensiongapParttime",
-      "PillarpaymentPensiongapDivorce",
-      "PillarpaymentPensiongapBuyhouse",
-      "PillarpaymentTaxsavingLotofmoney",
-      "InsuranceRobbery",
-      "InsuranceFlooding",
-      "EducationSalaryincrease",
-      "FinancemanagementDebtoverload",
-      "DidEverythingRight",
-    ];
+    const nuggets: NuggetType[] = [];
+
+    if (this.state.collectedEvents.find((event) => {
+      event.type === "PART_TIME_JOB"
+    })) {
+      if (this.state.collectedEvents.filter((event) => event.type === "3A_INSURANCE" || event.type === "SECOND_PILLAR").length < 2) {
+        nuggets.push("PillarpaymentPensiongapParttime");
+      }
+    }
+
+    if (this.state.collectedEvents.find((event) => {
+      event.type === "DIVORCE"
+    })) {
+      nuggets.push("PillarpaymentPensiongapDivorce");
+    }
+
+    if (this.state.collectedEvents.find((event) => {
+      event.type === "HOUSE"
+    })) {
+      if(this.state.collectedEvents.filter((event) => event.type === "3A_INSURANCE" || event.type === "SECOND_PILLAR").length > 0) {
+        if (this.state.lifebars.find(lifebar => lifebar.getType() === "THIRDPILLAR")!.getValue() === 0 || this.state.lifebars.find(lifebar => lifebar.getType() === "SECONDPILLAR")!.getValue() === 0) {
+          nuggets.push("PillarpaymentPensiongapBuyhouse");
+        }
+      }
+    }
+
+    if (this.state.lifebars.find(lifebar => lifebar.getType() === "MONEY")!.getValue() > 2000000) {
+      if(this.state.collectedEvents.filter((event) => event.type === "3A_INSURANCE" || event.type === "SECOND_PILLAR").length === 0) {
+        nuggets.push("PillarpaymentTaxsavingLotofmoney");
+      }
+    }
+
+    if (this.state.collectedEvents.find((event) => {
+      event.type === "ROBBERY"
+    })) {
+      nuggets.push("InsuranceRobbery");
+    }
+
+    if (this.state.collectedEvents.find((event) => {
+      event.type === "FLOODING"
+    })) {
+      nuggets.push("InsuranceFlooding");
+    }
+
+    if (this.state.lifebars.find(lifebar => lifebar.getType() === "INCOME")!.getValue() > 8000) {
+        nuggets.push("EducationSalaryincrease");
+    }
+
+    if (this.state.lifebars.find(lifebar => lifebar.getType() === "MONEY")!.getValue() <= GLOBAL_CONFIG.lostGameMoney) {
+      nuggets.push("FinancemanagementDebtoverload");
+    }
+
+    if (nuggets.length === 0) {
+      nuggets.push("DidEverythingRight");
+    }
+
+    return nuggets;
   }
 }
