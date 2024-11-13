@@ -1,22 +1,22 @@
-import { LifeEvent } from "./life-event";
-import { Lifebar } from "./lifebar";
+import {LifeEvent} from "./life-event";
+import {Lifebar} from "./lifebar";
 
-  
-  export type LifeEventEffect = {
+
+export type LifeEventEffect = {
     lifebars: Lifebar[];
     lifeEvents: {
-      type: LifeEventType;
-      frequency: Frequency;
+        type: LifeEventType;
+        frequency: Frequency;
     }[];
-  };
-  
-  export type Frequency = {
+};
+
+export type Frequency = {
     limit: number;
     probability?: Percentage;
-  };
-  
+};
 
-  export type LifeEventType =
+
+export type LifeEventType =
     | "JOB"
     | "APARTMENT"
     | "3A_INSURANCE"
@@ -34,10 +34,9 @@ import { Lifebar } from "./lifebar";
     | "FLOODING"
     | "DIVORCE"
     | "JOB_LOSS";
-  
-  
-  
-  export type LifebarType =
+
+
+export type LifebarType =
     | "AGE"
     | "MONEY"
     | "CHILDAGE"
@@ -46,17 +45,26 @@ import { Lifebar } from "./lifebar";
     | "EXPENSES"
     | "THIRDPILLAR"
     | "SECONDPILLAR";
-  
 
-  
-  export type GameState = {
+export type NuggetType =
+    "PillarpaymentPensiongapParttime"
+    | "PillarpaymentPensiongapDivorce"
+    | "PillarpaymentPensiongapBuyhouse"
+    | "PillarpaymentTaxsavingLotofmoney"
+    | "InsuranceRobbery"
+    | "InsuranceFlooding"
+    | "EducationSalaryincrease"
+    | "FinancemanagementDebtoverload"
+    | "DidEverythingRight";
+
+export type GameState = {
     lifebars: Lifebar[];
     collectedEvents: LifeEvent[];
-  };
-  
-  export type Year = number;
-  export type Month = number;
-  export  type Percentage = number;
+};
+
+export type Year = number;
+export type Month = number;
+export  type Percentage = number;
   
 
   

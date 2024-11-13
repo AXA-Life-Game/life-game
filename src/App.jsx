@@ -6,6 +6,7 @@ import Layout from "./components/Layout.jsx";
 import { Box } from "@mui/system";
 import EndlessGameScreen from "./routes/EndlessGameScreen.jsx";
 import LearningNuggetsScreen from "./routes/LearningNuggetsScreen.jsx";
+import ScoreScreen from "./routes/ScoreScreen.jsx";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
           <Route path="endless-game" element={<EndlessGameScreen />} />
           <Route path="scoreboard" element={<Scoreboard />} />
           <Route path="learning" element={<LearningNuggetsScreen />} />
+          <Route path="score" element={<ScoreScreen />} />
 
           <Route path="*" element={<NoMatch />} />
         </Route>
