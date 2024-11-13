@@ -82,7 +82,7 @@ export function initGameScene(sceneName) {
           level.spawn(
             "$",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 5))
+            level.numRows() - Math.floor(rand(2, 7))
           );
         }
       }
