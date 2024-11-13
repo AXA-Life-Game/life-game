@@ -6,7 +6,7 @@ const defaultLevel = [
   "                    ^  0              ",
   "                   ------            %",
   "                                      ",
-  "            s                b         ",
+  "                            b         ",
   "======================================",
 ];
 
@@ -96,28 +96,27 @@ export function initGameScene(sceneName) {
 
       function spawnRandomEvent(tilePosX, tileWidth) {
         const rng = rand(0, 1);
-        // an event has a 25% chance to spawn every block
-        if (rng > 0.98) {
+        if (rng > 0.99) {
           level.spawn(
             "%",
             tilePosX + tileWidth,
             level.numRows() - Math.floor(rand(4, 7))
           );
-        } else if (rng > 0.96) {
+        } else if (rng > 0.97) {
           level.spawn("^", tilePosX + tileWidth, level.numRows() - 2);
-        } else if (rng > 0.94) {
+        } else if (rng > 0.95) {
           level.spawn(
             "0",
             tilePosX + tileWidth,
             level.numRows() - Math.floor(rand(2, 5))
           );
-        } else if (rng > 0.92) {
+        } else if (rng > 0.93) {
           level.spawn(
             "$",
             tilePosX + tileWidth,
             level.numRows() - Math.floor(rand(2, 7))
           );
-        } else if (rng > 0.85) {
+        } else if (rng > 0.2) {
           level.spawn(
             lifeEvents[Math.floor(rand(lifeEvents.length))],
             tilePosX + tileWidth,
@@ -169,7 +168,8 @@ export function initGameScene(sceneName) {
         if (currentTile < tilePosX) {
           level.spawn("=", tilePosX + tileWidth, level.numRows() - 1);
           currentTile = tilePosX;
-          if (currentTile > level.numColumns()) {
+          // spawning a random item eevery 8 blocks
+          if (currentTile > level.numColumns() && currentTile % 8 === 0) {
             spawnRandomEvent(tilePosX, tileWidth);
           }
         }
