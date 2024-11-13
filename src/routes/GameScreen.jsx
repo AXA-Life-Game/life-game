@@ -2,12 +2,30 @@ import { createRef, useEffect } from "react";
 import init from "../game.js";
 import { Box } from "@mui/system";
 import kaplay from "kaplay";
-import Timeline from "../components/Timeline.jsx";
+import Timeline, {
+  TIMELINE_AGE_ARRAY,
+  TIMELINE_YEAR_WIDTH,
+} from "../components/Timeline.jsx";
+import { useSpring } from "@react-spring/web";
+import { useNavigate } from "react-router-dom";
+
+const TOTAL_YEARS = TIMELINE_AGE_ARRAY.length;
+const TOTAL_MONTHS = TOTAL_YEARS * 12;
+const TOTAL_WIDTH = TIMELINE_YEAR_WIDTH * TOTAL_YEARS;
 
 const GameScreen = () => {
   const canvasRef = createRef();
   const kaplayRef = createRef();
   const editorRef = createRef();
+
+  const navigate = useNavigate();
+  const [timelineProps, api] = useSpring(
+    () => ({
+      from: { x: 0 },
+      to: { x: -TOTAL_WIDTH },
+    }),
+    [],
+  );
 
   useEffect(() => {
     if (canvasRef.current) {
@@ -16,33 +34,18 @@ const GameScreen = () => {
         background: [10, 152, 172],
       });
     }
-    // Some handy features for the level editor
-    if (editorRef.current) {
-      editorRef.current.onkeydown = (e) => {
-        if (!e.ctrlKey) {
-          const el = document.activeElement;
-          const [start, end] = [el.selectionStart, el.selectionEnd];
-          if (e.key === "Delete") {
-            if (start === end) {
-              el.setRangeText(" ", start, end, "end");
-            } else {
-              el.setRangeText(" ".repeat(end - start), start, end - 1, "end");
-            }
-          } else if (e.key.length === 1 && e.key !== " ") {
-            if (start === end) {
-              el.setRangeText("", start, end + 1, "end");
-            } else {
-              el.setRangeText(e.key.repeat(end - start - 1), start, end, "end");
-            }
-          }
-        }
-      };
-    }
   }, []);
 
   useEffect(() => {
     if (canvasRef.current && !kaplayRef.current) {
-      kaplayRef.current = init();
+      kaplayRef.current = init(
+        (currentMonth) => {
+          api.start({ x: (currentMonth * -TOTAL_WIDTH) / TOTAL_MONTHS });
+        },
+        () => {
+          navigate("/learning");
+        },
+      );
     }
   }, []);
 
@@ -64,7 +67,7 @@ const GameScreen = () => {
           width: "100%",
         }}
       >
-        <Timeline />
+        <Timeline style={timelineProps} />
       </Box>
     </Box>
   );

@@ -1,22 +1,15 @@
 import { Box, Stack } from "@mui/system";
 import { animated, useSpring } from "@react-spring/web";
 
-const ageArray = Array.from({ length: 70 - 18 + 1 }, (_, i) => i + 18);
-const YEAR_WIDTH = 400;
-
 const AnimatedStack = animated(Stack);
-const Timeline = () => {
-  const [props, api] = useSpring(
-    () => ({
-      from: { x: 0 },
-      to: { x: -YEAR_WIDTH * ageArray.length },
-      config: {
-        duration: 60000,
-      },
-    }),
-    [],
-  );
 
+export const TIMELINE_YEAR_WIDTH = 400;
+export const TIMELINE_AGE_ARRAY = Array.from(
+  { length: 70 - 18 + 1 },
+  (_, i) => i + 18,
+);
+
+const Timeline = ({ style }) => {
   return (
     <Box
       sx={{
@@ -27,24 +20,43 @@ const Timeline = () => {
       }}
     >
       <AnimatedStack
-        gap={`${YEAR_WIDTH}px`}
+        gap={`${TIMELINE_YEAR_WIDTH}px`}
         direction={"row"}
         alignItems={"flex-end"}
         sx={{
           height: "100%",
         }}
-        style={props}
+        style={style}
       >
-        {ageArray.map((item) => (
+        {TIMELINE_AGE_ARRAY.map((item) => (
           <Box
             key={item}
             sx={{
-              height: 32,
-              minWidth: 4,
-              background: "#fff",
-              borderRadius: "2px 2px 0 0",
+              display: "flex",
+              justifyContent: "center",
+              color: "#fff",
+              flexDirection: "column",
+              alignItems: "center",
             }}
-          ></Box>
+          >
+            <Box
+              sx={{
+                fontSize: "22px",
+                fontFamily: "Bungee",
+                width: 120,
+              }}
+            >
+              {item} JAHRE
+            </Box>
+            <Box
+              sx={{
+                height: 18,
+                width: 4,
+                background: "#fff",
+                borderRadius: "2px 2px 0 0",
+              }}
+            ></Box>
+          </Box>
         ))}
       </AnimatedStack>
     </Box>

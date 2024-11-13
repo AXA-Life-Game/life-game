@@ -37,7 +37,7 @@ const lifeEvents = [
   "n",
 ];
 
-export function initGameScene(sceneName) {
+export function initGameScene(sceneName, ageCallback, gameEndCallback) {
   scene(
     sceneName,
     ({ levelId, money, age } = { levelId: 0, money: 0, age: 18 }) => {
@@ -57,7 +57,10 @@ export function initGameScene(sceneName) {
       const level = addLevel(LEVELS[levelId ?? 0], itemsConfig);
 
       // wait for some time and trigger the win
-      wait(GAME_DURATION, () => go("win", { coins: money }));
+      wait(GAME_DURATION, () => {
+        gameEndCallback();
+        go("win", { coins: money });
+      });
 
       wait(5, () => {
         console.log("wait 5");
@@ -77,6 +80,8 @@ export function initGameScene(sceneName) {
       let currentMonth = 0;
       loop(YEAR_DURATION / 12, () => {
         currentMonth++;
+
+        ageCallback(currentMonth);
 
         money += 100;
         coinsLabel.text = money;

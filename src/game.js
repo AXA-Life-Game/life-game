@@ -1,21 +1,14 @@
 import { loadEntities } from "./game/game-entities";
 import { initGameScene } from "./game/game-scene";
 
-const init = () => {
+const init = (ageCallback, gameEndCallback) => {
   // @ts-check
   loadEntities();
   setGravity(3200);
 
-  initGameScene("game");
+  initGameScene("game", ageCallback, gameEndCallback);
 
   layers(["background", "game"], "game");
-
-  scene("start", () => {
-    add([text("Welcome to the pension game"), pos(24, 24)]);
-    add([text("Press any key to start"), pos(24, 64)]);
-    onKeyPress(() => go("game"));
-    onClick(() => go("game"));
-  });
 
   scene("lose", () => {
     add([text("You lose"), pos(24, 24)]);
@@ -31,7 +24,7 @@ const init = () => {
     onClick(() => go("game"));
   });
 
-  go("start");
+  go("game");
 };
 
 export default init;
