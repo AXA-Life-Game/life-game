@@ -9,6 +9,7 @@ import { useInterval } from "usehooks-ts";
 import { differenceInSeconds, intervalToDuration } from "date-fns";
 
 const AnimatedButton = animated(Button);
+const AnimatedBox = animated(Box);
 const RELEASE_DATE = new Date(2024, 11, 14, 15);
 
 const GameMenu = () => {
@@ -33,7 +34,7 @@ const GameMenu = () => {
       from: { opacity: 0, scale: 0.8 },
       to: { opacity: 1, scale: 1 },
       delay: 600,
-      config: config.stiff,
+      config: config.gentle,
     }),
     [],
   );
@@ -50,7 +51,8 @@ const GameMenu = () => {
     >
       <Logo />
 
-      <Box
+      <AnimatedBox
+        style={buttonStyle}
         sx={{
           display: "flex",
           flexDirection: "column",
@@ -71,7 +73,7 @@ const GameMenu = () => {
         >
           In 23 Hours
         </Box>
-      </Box>
+      </AnimatedBox>
     </Stack>
   );
 };
