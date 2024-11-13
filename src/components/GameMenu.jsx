@@ -39,6 +39,16 @@ const GameMenu = () => {
     [],
   );
 
+  const [comingSoon] = useSpring(
+    () => ({
+      from: { opacity: 0, scale: 0.8 },
+      to: { opacity: 1, scale: 1 },
+      delay: 1200,
+      config: config.molasses,
+    }),
+    [],
+  );
+
   return (
     <Stack
       sx={{
@@ -52,7 +62,7 @@ const GameMenu = () => {
       <Logo />
 
       <AnimatedBox
-        style={buttonStyle}
+        style={comingSoon}
         sx={{
           display: "flex",
           flexDirection: "column",
