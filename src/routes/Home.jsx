@@ -6,6 +6,7 @@ import { useFullscreen, useToggle } from "react-use";
 import Logo from "../components/Logo.jsx";
 import { animated, config, useSpring } from "@react-spring/web";
 import GameMenu from "../components/GameMenu.jsx";
+import Timeline from "../components/Timeline.jsx";
 
 const AnimatedButton = animated(Button);
 

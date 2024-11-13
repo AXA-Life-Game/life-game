@@ -2,6 +2,7 @@ import { createRef, useEffect } from "react";
 import init from "../game.js";
 import { Box } from "@mui/system";
 import kaplay from "kaplay";
+import Timeline from "../components/Timeline.jsx";
 
 const GameScreen = () => {
   const canvasRef = createRef();
@@ -40,14 +41,31 @@ const GameScreen = () => {
   }, []);
 
   useEffect(() => {
-    if (canvasRef.current) {
+    if (canvasRef.current && !kaplayRef.current) {
       kaplayRef.current = init();
     }
   }, []);
 
   return (
-    <Box height={"100vh"} width={"100vw"}>
+    <Box
+      height={"100vh"}
+      width={"100vw"}
+      sx={{
+        position: "relative",
+      }}
+    >
       <canvas ref={canvasRef} width="100%" height="100%" />
+      <Box
+        sx={{
+          zIndex: 2,
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          width: "100%",
+        }}
+      >
+        <Timeline />
+      </Box>
     </Box>
   );
 };
