@@ -100,7 +100,7 @@ export function initGameScene(sceneName) {
           level.spawn(
             "%",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(4, 7))
+            level.numRows() - Math.floor(rand(4, 7)),
           );
         } else if (rng > 0.97) {
           level.spawn("^", tilePosX + tileWidth, level.numRows() - 2);
@@ -108,19 +108,19 @@ export function initGameScene(sceneName) {
           level.spawn(
             "0",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 5))
+            level.numRows() - Math.floor(rand(2, 5)),
           );
         } else if (rng > 0.93) {
           level.spawn(
             "$",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 7))
+            level.numRows() - Math.floor(rand(2, 7)),
           );
         } else if (rng > 0.2) {
           level.spawn(
             lifeEvents[Math.floor(rand(lifeEvents.length))],
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 7))
+            level.numRows() - Math.floor(rand(2, 7)),
           );
         }
       }
@@ -135,12 +135,12 @@ export function initGameScene(sceneName) {
         if (player.pos.y < roof) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - roof
+            player.pos.y + heightOffset - roof,
           );
         } else if (player.pos.y > floor) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - floor
+            player.pos.y + heightOffset - floor,
           );
         } else {
           camPos(player.pos.x + widthOffset, heightOffset);
@@ -202,7 +202,7 @@ export function initGameScene(sceneName) {
       // if player onCollide with any obj with "danger" tag, lose
       player.onCollide("danger", () => {
         money -= 1000;
-        play("hit");
+        play("portal");
         flicker(player);
       });
 
@@ -263,7 +263,7 @@ export function initGameScene(sceneName) {
         coinsLabel.text = money;
       });
 
-      player.onCollide("baby", (e) => {
+      player.onCollide("baby", () => {
         // if it's not from the top, die
         baby = add([
           sprite("babyLarry", { anim: "run" }),
@@ -331,6 +331,6 @@ export function initGameScene(sceneName) {
 
       onKeyPress("backspace", () => go("lose"));
       onKeyPress("escape", () => go("lose"));
-    }
+    },
   );
 }
