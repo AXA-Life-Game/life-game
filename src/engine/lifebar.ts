@@ -13,10 +13,14 @@ export class Lifebar {
 
     public getType(): LifebarType {
         return this.type;
-
+    }
     public getValue(): number {
         return this.value;
     }
+    public setValue(value: number): void {
+        this.value = value;
+    }
+    
 
     public applyEffect(effect: LifeEventEffect): void {
         effect.lifebars.forEach((lifebar) => {
@@ -39,7 +43,8 @@ export class Lifebar {
                     const filteredLifebar = currentEvent.effect.lifebars.find((lifebar) => lifebar.type === "INCOME");
                     if (filteredLifebar) {
                         return eventAcc + filteredLifebar.value;
-                    }
+                    } 
+                    return eventAcc;
                 }, 0);
                 break;
             case "TAX":
@@ -48,6 +53,7 @@ export class Lifebar {
                     if (filteredLifebar) {
                         return eventAcc + filteredLifebar.value;
                     }
+                    return eventAcc;
                 }, 0);
                 break;
             case "EXPENSES":
@@ -56,6 +62,7 @@ export class Lifebar {
                     if (filteredLifebar) {
                         return eventAcc + filteredLifebar.value;
                     }
+                    return eventAcc;
                 }, 0);
                 break;
             case "THIRDPILLAR":
@@ -64,6 +71,7 @@ export class Lifebar {
                     if (filteredLifebar) {
                         return eventAcc + filteredLifebar.value;
                     }
+                    return eventAcc;
                 }, 0);
                 break;
             case "SECONDPILLAR":
@@ -72,6 +80,7 @@ export class Lifebar {
                     if (filteredLifebar) {
                         return eventAcc + filteredLifebar.value;
                     }
+                    return eventAcc;
                 }, 0);
                 break;
             case "MONEY":

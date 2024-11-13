@@ -260,7 +260,8 @@ jobLossEvent.effect = {
   ],
 };
 
-export const gameEngine = (): GameEngine => {
+export const gameEngine = (     endGame: CallableFunction,
+     lostGame: CallableFunction): GameEngine => {
   return new GameEngine([
     jobLifeEvent,
     apartmentLifeEvent,
@@ -279,5 +280,5 @@ export const gameEngine = (): GameEngine => {
     floodingEvent,
     jobLossEvent,
     divorceEvent,
-  ]);
+  ], endGame, lostGame);
 };
