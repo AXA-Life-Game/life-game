@@ -46,7 +46,18 @@ export class GameEngine {
       this.state.lifebars.forEach((lifebar) => {
         lifebar.updateValueOnProgress(this.state.collectedEvents, time);
       });
+      this.aggregateMoney(this.state.lifebars);
       return this;
+    }
+
+    private aggregateMoney(lifebars: Lifebar[]) {
+        const money = lifebars.find((lifebar) => lifebar.getType() === "MONEY");
+        const income = lifebars.find((lifebar) => lifebar.getType() === "INCOME");
+        const expenses = lifebars.find((lifebar) => lifebar.getType() === "EXPENSES");
+        const tax = lifebars.find((lifebar) => lifebar.getType() === "TAX");
+        if (money && income && expenses && tax) {
+            money.setValue(money.getValue() + income.getValue() - expenses.getValue() - tax.getValue());
+        }
     }
   
     public getNextLifeEvent(): LifeEvent[] {
