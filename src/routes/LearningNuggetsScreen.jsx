@@ -3,14 +3,19 @@ import Container from "../components/Container.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import LearningNuggetsSlider from "../components/LearningNuggetsSlider.jsx";
 import { useMeasure } from "@uidotdev/usehooks";
-import hints from "../game/nuggets.js";
 import Button from "../components/Button.jsx";
-import { useEvent } from "react-use";
 import { useNavigate } from "react-router-dom";
+import { GameEngine } from "../engine/engine.ts";
+import nuggets from "../game/nuggets.js";
 
 const LearningNuggetsScreen = () => {
   const [ref, { width, height }] = useMeasure();
   const navigate = useNavigate();
+  const gameEngine = new GameEngine(
+    [],
+    () => {},
+    () => {},
+  );
 
   return (
     <Box
@@ -40,7 +45,9 @@ const LearningNuggetsScreen = () => {
             {width && (
               <LearningNuggetsSlider
                 width={width}
-                cards={[hints[0], hints[1], hints[3]]}
+                cards={gameEngine
+                  .generateNuggets()
+                  .map((id) => nuggets.find((nugget) => nugget.id === id))}
               />
             )}
           </Box>

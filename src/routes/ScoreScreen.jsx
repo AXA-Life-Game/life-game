@@ -3,9 +3,33 @@ import Container from "../components/Container.jsx";
 import PageHeader from "../components/PageHeader.jsx";
 import { useMeasure } from "@uidotdev/usehooks";
 import Button from "../components/Button.jsx";
+import { GameEngine } from "../engine/engine.ts";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const ScoreScreen = () => {
   const [ref, { width, height }] = useMeasure();
+  const navigate = useNavigate();
+  const gameEngine = new GameEngine(
+    [],
+    () => {},
+    () => {},
+  );
+  const [inputValuePlayerId, setInputValuePlayerId] = useState("");
+
+  const submitForm = (event) => {
+    event.preventDefault();
+    fetch("https://life-game-server-production.up.railway.app/score", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ playerId: inputValuePlayerId, score: 1000000 }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        // navigate("/");
+      });
+  };
 
   return (
     <Box
@@ -33,19 +57,17 @@ const ScoreScreen = () => {
             Gib deinen Namen ein und du siehst die Rangliste
           </Box>
           <Box>
-            <form>
+            <form onSubmit={submitForm}>
               <label>
-                <input type="text" />
+                <input
+                  type="text"
+                  value={inputValuePlayerId}
+                  onChange={(e) => setInputValuePlayerId(e.target.value)}
+                />
               </label>
             </form>
           </Box>
-          <Button
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            Scoreboard
-          </Button>
+          <Button onClick={submitForm}>Scoreboard</Button>
         </Stack>
       </Box>
     </Box>
