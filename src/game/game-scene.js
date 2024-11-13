@@ -10,7 +10,7 @@ const demo = {
 const defaultLevel = [
   "                             ",
   "                             ",
-  "       ^                      ",
+  "       ^                     ",
   "=============================",
 ];
 
@@ -20,6 +20,7 @@ export function initGameScene(sceneName) {
   scene(
     sceneName,
     ({ levelId, money, age } = { levelId: 0, money: 0, age: 18 }) => {
+      console.log("engine init");
       const engine = gameEngine(
         () => console.log("win"),
         () => console.log("lost")
@@ -215,7 +216,9 @@ export function initGameScene(sceneName) {
       });
 
       player.onCollide("event", (e) => {
-        engine.addLifeEvent(e.lifeEvent, currentMonth);
+        if (e.lifeEvent) {
+          engine.addLifeEvent(e.lifeEvent, currentMonth);
+        }
         e.destroy();
         play("blip");
       });
