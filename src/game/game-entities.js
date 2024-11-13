@@ -18,7 +18,7 @@ import rentApartment from "../assets/events/rent-apartment.png";
 import robbery from "../assets/events/robbery.png";
 import salaryIncrease from "../assets/events/salary-increase.png";
 import larry from "../assets/larry-man-blue-walk.png";
-import runingKid from "../assets/pink-man-run-32x32.png";
+import runningKid from "../assets/pink-man-run-32x32.png";
 import idleKid from "../assets/pink-man-idle-32x32.png";
 import background from "../assets/background.png";
 
@@ -56,7 +56,7 @@ export function loadEntities() {
       },
     },
   });
-  loadSprite("babyLarry", runingKid, {
+  loadSprite("babyLarry", runningKid, {
     sliceX: 12,
     sliceY: 0,
     anims: {
