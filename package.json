@@ -19,12 +19,14 @@
     "@react-spring/web": "^9.7.5",
     "@uidotdev/usehooks": "^2.4.1",
     "@use-gesture/react": "^10.3.1",
+    "date-fns": "^4.1.0",
     "kaplay": "^3001.0.2",
     "lodash.clamp": "^4.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
-    "react-use": "^17.5.1"
+    "react-use": "^17.5.1",
+    "usehooks-ts": "^3.1.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
