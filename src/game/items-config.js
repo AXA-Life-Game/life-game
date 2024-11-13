@@ -13,7 +13,7 @@ export const itemsConfig = {
       "platform",
     ],
     b: () => [
-      sprite("babyLarry", { anim: "spin" }),
+      sprite("idleKid", { anim: "idle" }),
       area(),
       body({ isStatic: true }),
       scale(1.5),

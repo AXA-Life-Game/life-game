@@ -1,6 +1,7 @@
 import axaLogo from "../assets/axa-logo.svg.png";
 import larry from "../assets/larry-man-blue-walk.png";
-import babyLarry from "../assets/larry-man-blue-360.png";
+import runingKid from "../assets/pink-man-run-32x32.png";
+import idleKid from "../assets/pink-man-idle-32x32.png";
 import background from "../assets/background.png";
 
 export function loadEntities() {
@@ -19,15 +20,27 @@ export function loadEntities() {
       },
     },
   });
-  loadSprite("babyLarry", babyLarry, {
-    sliceX: 8,
+  loadSprite("babyLarry", runingKid, {
+    sliceX: 12,
     sliceY: 0,
     anims: {
-      spin: {
+      run: {
         from: 0,
-        to: 7,
+        to: 11,
         loop: true,
-        speed: 15,
+        speed: 30,
+      },
+    },
+  });
+  loadSprite("idleKid", idleKid, {
+    sliceX: 11,
+    sliceY: 0,
+    anims: {
+      idle: {
+        from: 0,
+        to: 10,
+        loop: true,
+        speed: 30,
       },
     },
   });
