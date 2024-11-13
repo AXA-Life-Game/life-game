@@ -29,14 +29,11 @@ export class Lifebar {
           break;
         case "INCOME":
           collectedEvents.forEach((event) => {
-            const incomeLifebar = event.effect.lifebars.find(
-              (lifebar) => lifebar.type === "INCOME"
-            );
+            const incomeLifebar = event.effect.lifebars.find((lifebar) => lifebar.type === "INCOME");
             if (incomeLifebar) {
               this.value += incomeLifebar.value;
             }
           });
-          this.value += 5000;
           break;
         // TODO: add others
         default:
