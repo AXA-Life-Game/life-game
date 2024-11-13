@@ -167,10 +167,24 @@ export function initGameScene(sceneName) {
         updateCamPos();
       });
 
+      // flicker the player when hit
+      function flicker(player) {
+        let flickerCount = 0;
+        const flickerInterval = setInterval(() => {
+          player.opacity = player.opacity === 1 ? 0.5 : 1;
+          flickerCount++;
+          if (flickerCount > 10) {
+            clearInterval(flickerInterval);
+            player.opacity = 1;
+          }
+        }, 100);
+      }
+
       // if player onCollide with any obj with "danger" tag, lose
       player.onCollide("danger", () => {
         money -= 1000;
         play("hit");
+        flicker(player);
       });
 
       player.onCollide("portal", () => {
