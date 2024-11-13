@@ -82,25 +82,25 @@ export function initGameScene(sceneName) {
           level.spawn(
             "$",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 7))
+            level.numRows() - Math.floor(rand(2, 7)),
           );
         } else if (rng > 0.85) {
           level.spawn(
             "%",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(4, 7))
+            level.numRows() - Math.floor(rand(4, 7)),
           );
         } else if (rng > 0.8) {
           level.spawn(
             "0",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 5))
+            level.numRows() - Math.floor(rand(2, 5)),
           );
         } else if (rng > 0.75) {
           level.spawn(
             "#",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 7))
+            level.numRows() - Math.floor(rand(2, 7)),
           );
         } else if (rng > 0.7) {
           level.spawn("^", tilePosX + tileWidth, level.numRows() - 2);
@@ -117,12 +117,12 @@ export function initGameScene(sceneName) {
         if (player.pos.y < roof) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - roof
+            player.pos.y + heightOffset - roof,
           );
         } else if (player.pos.y > floor) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - floor
+            player.pos.y + heightOffset - floor,
           );
         } else {
           camPos(player.pos.x + widthOffset, heightOffset);
@@ -196,6 +196,7 @@ export function initGameScene(sceneName) {
           player.jump(JUMP_FORCE);
           play("blip");
         }
+        player.use(sprite("larry", { anim: "run" }));
       });
 
       player.onCollide("enemy", (e, col) => {
@@ -276,6 +277,7 @@ export function initGameScene(sceneName) {
         // these 2 functions are provided by body() component
         if (player.isGrounded()) {
           player.jump(JUMP_FORCE);
+          player.use(sprite("larryJump", { anim: "jump" }));
         }
       }
 
@@ -292,6 +294,6 @@ export function initGameScene(sceneName) {
 
       onKeyPress("backspace", () => go("lose"));
       onKeyPress("escape", () => go("lose"));
-    }
+    },
   );
 }

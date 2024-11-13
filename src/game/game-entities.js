@@ -18,6 +18,7 @@ import rentApartment from "../assets/events/rent-apartment.png";
 import robbery from "../assets/events/robbery.png";
 import salaryIncrease from "../assets/events/salary-increase.png";
 import larry from "../assets/larry-man-blue-walk.png";
+import larryJump from "../assets/larry-man-blue-jump.png";
 import runningKid from "../assets/pink-man-run-32x32.png";
 import idleKid from "../assets/pink-man-idle-32x32.png";
 import background from "../assets/background.png";
@@ -77,6 +78,18 @@ export function loadEntities() {
         to: 10,
         loop: true,
         speed: 30,
+      },
+    },
+  });
+  loadSprite("larryJump", larryJump, {
+    sliceX: 2,
+    sliceY: 0,
+    anims: {
+      jump: {
+        from: 0,
+        to: 1,
+        loop: false,
+        speed: 15,
       },
     },
   });
