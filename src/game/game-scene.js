@@ -16,11 +16,11 @@ let calculateAge = (currentMonth) => 18 + parseInt(currentMonth / 12);
 export function initGameScene(sceneName, ageCallback, gameEndCallback) {
   scene(
     sceneName,
-    ({ levelId, money, age } = { levelId: 0, money: 0, age: 18 }) => {
+    ({ levelId, money, age } = { levelId: 0, money: 1000, age: 18 }) => {
       console.log("engine init");
       const engine = gameEngine(
         () => console.log("win"),
-        () => console.log("lost"),
+        () => console.log("lost")
       );
 
       // define some constants
@@ -50,13 +50,18 @@ export function initGameScene(sceneName, ageCallback, gameEndCallback) {
 
       // Main Timeline Loop
       let currentMonth = 0;
+      let hasJob = false;
       loop(YEAR_DURATION / 12, () => {
         currentMonth++;
 
         ageCallback(currentMonth);
 
-        money += 100;
+        if (hasJob) {
+          money += 100;
+        }
         coinsLabel.text = `${money} CHF`;
+
+        // console.table(engine.progress(currentMonth).getState().lifebars);
 
         if (currentMonth % 12 === 0) {
           age = calculateAge(currentMonth);
@@ -94,7 +99,7 @@ export function initGameScene(sceneName, ageCallback, gameEndCallback) {
         const addedEvent = level.spawn(
           itemsMapping[lifeEvent.type].symbol,
           tilePosX + tileWidth,
-          level.numRows() - Math.floor(rand(2, 7)),
+          level.numRows() - Math.floor(rand(2, 7))
         );
         addedEvent.lifeEvent = lifeEvent;
       }
@@ -109,12 +114,12 @@ export function initGameScene(sceneName, ageCallback, gameEndCallback) {
         if (player.pos.y < roof) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - roof,
+            player.pos.y + heightOffset - roof
           );
         } else if (player.pos.y > floor) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - floor,
+            player.pos.y + heightOffset - floor
           );
         } else {
           camPos(player.pos.x + widthOffset, heightOffset);
@@ -142,9 +147,16 @@ export function initGameScene(sceneName, ageCallback, gameEndCallback) {
           currentTile = tilePosX;
           // spawning a random item eevery 8 blocks
           if (currentTile > level.numColumns() && currentTile % 8 === 0) {
-            const events = engine.getNextLifeEvents();
+            // const events = engine.getNextLifeEvents();
+            const allEvents = Object.values(itemsMapping);
+            const events = [allEvents[Math.floor(rand(0, allEvents.length))]];
             events.forEach((event, index) => {
-              spawnRandomEvent(tilePosX + index, event);
+              // spawnRandomEvent(tilePosX + index, event);
+              level.spawn(
+                event.symbol,
+                tilePosX + tileWidth + index,
+                level.numRows() - Math.floor(rand(2, 7))
+              );
             });
           }
         }
@@ -181,6 +193,9 @@ export function initGameScene(sceneName, ageCallback, gameEndCallback) {
         flicker(player);
       });
 
+      player.onCollide("getJob", () => {
+        hasJob = true;
+      });
       player.onCollide("portal", () => {
         play("portal");
         if (levelId + 1 < LEVELS.length) {
@@ -309,6 +324,6 @@ export function initGameScene(sceneName, ageCallback, gameEndCallback) {
 
       onKeyPress("backspace", () => go("lose"));
       onKeyPress("escape", () => go("lose"));
-    },
+    }
   );
 }
