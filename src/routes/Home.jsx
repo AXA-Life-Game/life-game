@@ -51,7 +51,7 @@ const Home = () => {
       <AnimatedButton
         style={buttonStyle}
         onClick={() => {
-          navigate("/game");
+          navigate("/game/");
         }}
       >
         Start
