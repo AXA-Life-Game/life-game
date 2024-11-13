@@ -1,6 +1,6 @@
 import {LifeEvent} from "./life-event";
 import {Lifebar} from "./lifebar";
-import {GameState, Month} from "./types";
+import {GameState, Month, NuggetType} from "./types";
 import {GLOBAL_CONFIG} from "./config";
 
 export class GameEngine {
@@ -145,5 +145,17 @@ export class GameEngine {
 
     public getState(): GameState {
         return this.state;
+    }
+
+    public generateNuggets(): NuggetType[] {
+        return ["PillarpaymentPensiongapParttime"
+        , "PillarpaymentPensiongapDivorce"
+        , "PillarpaymentPensiongapBuyhouse"
+        , "PillarpaymentTaxsavingLotofmoney"
+        , "InsuranceRobbery"
+        , "InsuranceFlooding"
+        , "EducationSalaryincrease"
+        , "FinancemanagementDebtoverload"
+        , "DidEverythingRight"];
     }
 }
