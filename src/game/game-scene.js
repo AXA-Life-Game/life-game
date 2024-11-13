@@ -23,7 +23,7 @@ export function initGameScene(sceneName) {
       console.log("engine init");
       const engine = gameEngine(
         () => console.log("win"),
-        () => console.log("lost")
+        () => console.log("lost"),
       );
 
       // define some constants
@@ -94,7 +94,7 @@ export function initGameScene(sceneName) {
         const addedEvent = level.spawn(
           itemsMapping[lifeEvent.type].symbol,
           tilePosX + tileWidth,
-          level.numRows() - Math.floor(rand(2, 7))
+          level.numRows() - Math.floor(rand(2, 7)),
         );
         addedEvent.lifeEvent = lifeEvent;
       }
@@ -109,12 +109,12 @@ export function initGameScene(sceneName) {
         if (player.pos.y < roof) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - roof
+            player.pos.y + heightOffset - roof,
           );
         } else if (player.pos.y > floor) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - floor
+            player.pos.y + heightOffset - floor,
           );
         } else {
           camPos(player.pos.x + widthOffset, heightOffset);
@@ -141,7 +141,7 @@ export function initGameScene(sceneName) {
           level.spawn("=", tilePosX + tileWidth, level.numRows() - 1);
           currentTile = tilePosX;
           // spawning a random item eevery 8 blocks
-          if (currentTile % 8 === 0) {
+          if (currentTile > level.numColumns() && currentTile % 8 === 0) {
             const events = engine.getNextLifeEvents();
             events.forEach((event, index) => {
               spawnRandomEvent(tilePosX + index, event);
@@ -309,6 +309,6 @@ export function initGameScene(sceneName) {
 
       onKeyPress("backspace", () => go("lose"));
       onKeyPress("escape", () => go("lose"));
-    }
+    },
   );
 }
