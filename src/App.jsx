@@ -1,4 +1,4 @@
-import { Routes, Route, Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
 import Scoreboard from "./routes/Scoreboard.jsx";
 import GameScreen from "./routes/GameScreen.jsx";
 import Home from "./routes/Home.jsx";
@@ -6,10 +6,8 @@ import Layout from "./components/Layout.jsx";
 import { Box } from "@mui/system";
 import EndlessGameScreen from "./routes/EndlessGameScreen.jsx";
 import LearningNuggetsScreen from "./routes/LearningNuggetsScreen.jsx";
-import { useState } from "react";
 
 export default function App() {
-  const [showOverlay, setShowOverlay] = useState(true);
   return (
     <Box
       sx={{
