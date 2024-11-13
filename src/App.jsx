@@ -6,8 +6,10 @@ import Layout from "./components/Layout.jsx";
 import { Box } from "@mui/system";
 import EndlessGameScreen from "./routes/EndlessGameScreen.jsx";
 import LearningNuggetsScreen from "./routes/LearningNuggetsScreen.jsx";
+import { useState } from "react";
 
 export default function App() {
+  const [showOverlay, setShowOverlay] = useState(true);
   return (
     <Box
       sx={{

@@ -1,12 +1,17 @@
 import { big } from "./game-animations";
 import { itemsConfig } from "./items-config";
 
+const demo = {
+  25: "g",
+  37: "p",
+};
+
 const defaultLevel = [
   "                                      ",
-  "                    ^  0              ",
-  "                   ------            %",
   "                                      ",
-  "                            b         ",
+  "                                      ",
+  "                                      ",
+  "                                      ",
   "======================================",
 ];
 
@@ -54,6 +59,20 @@ export function initGameScene(sceneName) {
       // wait for some time and trigger the win
       wait(GAME_DURATION, () => go("win", { coins: money }));
 
+      wait(5, () => {
+        console.log("wait 5");
+      });
+      Object.keys(demo).map((age) => {
+        wait((age - 18) * YEAR_DURATION, () => {
+          console.log("spawn", demo[age]);
+          level.spawn(
+            demo[age],
+            currentTile + tileWidth,
+            level.numRows() - Math.floor(rand(2, 7)),
+          );
+        });
+      });
+
       // Main Timeline Loop
       let currentMonth = 0;
       loop(YEAR_DURATION / 12, () => {
@@ -100,7 +119,7 @@ export function initGameScene(sceneName) {
           level.spawn(
             "%",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(4, 7))
+            level.numRows() - Math.floor(rand(4, 7)),
           );
         } else if (rng > 0.97) {
           level.spawn("^", tilePosX + tileWidth, level.numRows() - 2);
@@ -108,19 +127,19 @@ export function initGameScene(sceneName) {
           level.spawn(
             "0",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 5))
+            level.numRows() - Math.floor(rand(2, 5)),
           );
         } else if (rng > 0.93) {
           level.spawn(
             "$",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 7))
+            level.numRows() - Math.floor(rand(2, 7)),
           );
         } else if (rng > 0.2) {
           level.spawn(
             lifeEvents[Math.floor(rand(lifeEvents.length))],
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 7))
+            level.numRows() - Math.floor(rand(2, 7)),
           );
         }
       }
@@ -135,12 +154,12 @@ export function initGameScene(sceneName) {
         if (player.pos.y < roof) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - roof
+            player.pos.y + heightOffset - roof,
           );
         } else if (player.pos.y > floor) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - floor
+            player.pos.y + heightOffset - floor,
           );
         } else {
           camPos(player.pos.x + widthOffset, heightOffset);
@@ -148,6 +167,8 @@ export function initGameScene(sceneName) {
       }
 
       let currentTile = 0;
+      const tileWidth = Math.floor(width() / 64);
+
       // action() runs every frame
       player.onUpdate(() => {
         if (baby) {
@@ -164,7 +185,6 @@ export function initGameScene(sceneName) {
         }
         // spawning a new floor every tile
         const tilePosX = Math.floor(player.pos.x / 64);
-        const tileWidth = Math.floor(width() / 64);
         if (currentTile < tilePosX) {
           level.spawn("=", tilePosX + tileWidth, level.numRows() - 1);
           currentTile = tilePosX;
@@ -331,6 +351,6 @@ export function initGameScene(sceneName) {
 
       onKeyPress("backspace", () => go("lose"));
       onKeyPress("escape", () => go("lose"));
-    }
+    },
   );
 }
