@@ -36,7 +36,6 @@ const LearningNuggetsSlider = ({ cards, width }) => {
       <Box
         sx={{
           position: "relative",
-          overflow: "hidden",
           height: "320px",
           width,
         }}
@@ -63,7 +62,13 @@ const LearningNuggetsSlider = ({ cards, width }) => {
           </AnimatedBox>
         ))}
       </Box>
-      <Stack direction={"row"} gap={4}>
+      <Stack
+        direction={"row"}
+        gap={{
+          xs: 2,
+          md: 4,
+        }}
+      >
         {cards.map((card, index) => (
           <Box
             onClick={() => {
@@ -75,9 +80,9 @@ const LearningNuggetsSlider = ({ cards, width }) => {
             }}
             key={index}
             sx={{
-              borderRadius: 2,
-              width: 32,
-              height: 32,
+              borderRadius: 1,
+              width: 16,
+              height: 16,
               border: `2px solid #000057`,
               background: index === current ? "#000057" : "transparent",
             }}

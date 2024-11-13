@@ -1,8 +1,5 @@
-import LogoSolid from "../assets/logo-solid.svg?react";
-import LogoText from "../assets/logo-text.svg?react";
 import Spinner from "../assets/Spinner.svg?react";
-import { Box } from "@mui/system";
-import { useSpring, animated } from "@react-spring/web";
+import { animated, useSpring } from "@react-spring/web";
 
 const AnimatedSpinner = animated(Spinner);
 
@@ -21,34 +18,12 @@ const Loader = ({}) => {
   });
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        gap: 8,
-        width: 64,
+    <AnimatedSpinner
+      style={{
+        ...style,
+        height: 74,
       }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          flexDirection: "column",
-          gap: 4,
-        }}
-      >
-        <LogoSolid />
-        <LogoText />
-      </Box>
-      <AnimatedSpinner
-        style={{
-          ...style,
-          width: 32,
-        }}
-      />
-    </Box>
+    />
   );
 };
 

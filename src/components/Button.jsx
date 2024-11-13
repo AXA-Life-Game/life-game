@@ -8,15 +8,15 @@ const Button = ({ children, ...props }) => {
         justifyContent: "center",
         alignItems: "center",
 
-        background: "#00008F",
-        boxShadow: "4px 4px 0px 0px #333",
+        background: "#fff",
+        boxShadow: "8px 8px 0px 0px #333",
         border: "1px solid #333",
-        color: "#fff",
+        color: "#00008F",
         fontFamily: "Bungee",
-        fontSize: "16px",
-        borderRadius: "8px",
-        height: "36px",
-        minWidth: 120,
+        fontSize: "24px",
+        borderRadius: "16px",
+        height: "72px",
+        minWidth: 256,
       }}
       {...props}
     >

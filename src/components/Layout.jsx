@@ -1,10 +1,17 @@
-import {Outlet} from "react-router-dom";
-import {Box} from "@mui/system";
+import { Outlet } from "react-router-dom";
+import { Box } from "@mui/system";
 
-const Layout = ()  => {
-    return (
-            <Outlet />
-    );
-}
+const Layout = () => {
+  return (
+    <Box
+      sx={{
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <Outlet />
+    </Box>
+  );
+};
 
 export default Layout;

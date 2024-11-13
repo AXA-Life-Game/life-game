@@ -5,7 +5,7 @@ const CardContent = ({ children }) => {
     <Box
       sx={{
         padding: 2,
-        fontSize: "18px",
+        fontSize: "20px",
         backgroundColor: "#fff",
         color: "#333",
       }}

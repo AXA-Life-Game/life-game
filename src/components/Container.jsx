@@ -4,7 +4,7 @@ const Container = ({ children }) => {
   return (
     <Box
       sx={{
-        p: 2,
+        px: 2,
       }}
     >
       {children}
