@@ -4,14 +4,14 @@ import { Lifebar } from "./lifebar";
 
 const jobLifeEvent = new LifeEvent();
 jobLifeEvent.type = "JOB";
-jobLifeEvent.frequency = { limit: 20 };
+jobLifeEvent.frequency = { limit: 30 };
 jobLifeEvent.effect = {
   lifebars: [new Lifebar("INCOME", 5000), new Lifebar("TAX", 550)],
   lifeEvents: [
     {
       type: "APARTMENT",
       frequency: {
-        limit: 3,
+        limit: 30,
       },
     },
     {
@@ -23,7 +23,7 @@ jobLifeEvent.effect = {
     {
       type: "PART_TIME_JOB",
       frequency: {
-        limit: 3,
+        limit: 30,
       },
     },
   ],
@@ -44,13 +44,13 @@ apartmentLifeEvent.effect = {
     {
       type: "KIDS",
       frequency: {
-        limit: 1,
+        limit: 10,
       },
     },
     {
       type: "HOUSEHOLD_INSURANCE",
       frequency: {
-        limit: 0.2,
+        limit: 5,
       },
     },
   ],
@@ -73,7 +73,7 @@ householdLiabilityInsuranceEvent.effect = {
 
 const threeAInsuranceEvent = new LifeEvent();
 threeAInsuranceEvent.type = "3A_INSURANCE";
-threeAInsuranceEvent.frequency = { limit: 3 };
+threeAInsuranceEvent.frequency = { limit: 30 };
 threeAInsuranceEvent.effect = {
   lifebars: [
     new Lifebar("MONEY", -2000),
@@ -98,13 +98,13 @@ marriageEvent.effect = {
     {
       type: "KIDS",
       frequency: {
-        limit: 3,
+        limit: 30,
       },
     },
     {
       type: "DIVORCE",
       frequency: {
-        limit: 1,
+        limit: 10,
       },
     },
   ],
@@ -155,14 +155,14 @@ secondPillarEvent.effect = {
 // followed by additional life event salary increase
 const educationEvent = new LifeEvent();
 educationEvent.type = "EDUCATION";
-educationEvent.frequency = { limit: 2 };
+educationEvent.frequency = { limit: 20 };
 educationEvent.effect = {
   lifebars: [new Lifebar("MONEY", -20000), new Lifebar("TAX", -3000)],
   lifeEvents: [
     {
       type: "SALARY_INCREASE",
       frequency: {
-        limit: 1,
+        limit: 10,
       },
     },
   ],
@@ -209,7 +209,7 @@ lotteryEvent.effect = {
     {
       type: "SECOND_PILLAR",
       frequency: {
-        limit: 1,
+        limit: 10,
       },
     },
   ],
@@ -248,7 +248,7 @@ jobLossEvent.effect = {
     {
       type: "JOB",
       frequency: {
-        limit: 3,
+        limit: 30,
       },
     },
     {
