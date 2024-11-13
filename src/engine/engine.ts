@@ -49,13 +49,18 @@ export class GameEngine {
     }
 
     private applySpecialRules(lifeEvent: LifeEvent) {
+        const incomeBar = this.state.lifebars.find((lifebar) => lifebar.getType() === "INCOME")!;
+        const moneyBar = this.state.lifebars.find((lifebar) => lifebar.getType() === "MONEY")!;
+        const taxBar = this.state.lifebars.find((lifebar) => lifebar.getType() === "TAX")!;
+        const thirdPillarBar = this.state.lifebars.find((lifebar) => lifebar.getType() === "THIRDPILLAR")!;
+        const secondPillarBar = this.state.lifebars.find((lifebar) => lifebar.getType() === "SECONDPILLAR")!;
         switch (lifeEvent.type) {
             case "HOUSE":
                 const currentMoney = this.state.lifebars.find((lifebar) => lifebar.getType() === "MONEY")!.getValue();
                 const currentThirdPillar = this.state.lifebars.find((lifebar) => lifebar.getType() === "THIRDPILLAR")!.getValue();
                 const currentSecondPillar = this.state.lifebars.find((lifebar) => lifebar.getType() === "SECONDPILLAR")!.getValue();
                 if (currentMoney > 250000) {
-                   this.state.lifebars.find((lifebar) => lifebar.getType() === "MONEY")!.setValue(currentMoney - 200000);
+                    this.state.lifebars.find((lifebar) => lifebar.getType() === "MONEY")!.setValue(currentMoney - 200000);
                 } else if (currentMoney >= 200000 && currentMoney <= 250000 && currentThirdPillar > 50000) {
                     this.state.lifebars.find((lifebar) => lifebar.getType() === "MONEY")!.setValue(currentMoney - 150000);
                     this.state.lifebars.find((lifebar) => lifebar.getType() === "THIRDPILLAR")!.setValue(currentThirdPillar - 50000);
@@ -67,16 +72,27 @@ export class GameEngine {
                 }
                 break;
             case "DIVORCE":
-                const incomeBar = this.state.lifebars.find((lifebar) => lifebar.getType() === "INCOME")!;
-                const moneyBar = this.state.lifebars.find((lifebar) => lifebar.getType() === "MONEY")!;
-                const taxBar = this.state.lifebars.find((lifebar) => lifebar.getType() === "TAX")!;
-                const thirdPillarBar = this.state.lifebars.find((lifebar) => lifebar.getType() === "THIRDPILLAR")!;
-                const secondPillarBar = this.state.lifebars.find((lifebar) => lifebar.getType() === "SECONDPILLAR")!;
-                incomeBar.setValue(incomeBar.getValue()*0.7);
-                moneyBar.setValue(moneyBar.getValue()*0.7);
-                taxBar.setValue(taxBar.getValue()*0.7);
+                incomeBar.setValue(incomeBar.getValue() * 0.7);
+                moneyBar.setValue(moneyBar.getValue() * 0.7);
+                taxBar.setValue(taxBar.getValue() * 0.7);
                 thirdPillarBar.setValue(thirdPillarBar.getValue() * 0.7);
                 secondPillarBar.setValue(secondPillarBar.getValue() * 0.7);
+                break;
+            case "ROBBERY":
+                const householdEvent = this.state.collectedEvents.find((event) => event.type === "HOUSEHOLD_INSURANCE");
+                if (householdEvent) {
+                    moneyBar.setValue(moneyBar.getValue() * 0.9);
+                } else {
+                    moneyBar.setValue(moneyBar.getValue() * 0.5);
+                }
+                break;
+            case "FLOODING":
+                const houseEvent = this.state.collectedEvents.find((event) => event.type === "HOUSE_INSURANCE");
+                if (houseEvent) {
+                    moneyBar.setValue(moneyBar.getValue() * 0.9);
+                } else {
+                    moneyBar.setValue(moneyBar.getValue() * 0.5);
+                }
                 break;
             default:
                 break;
