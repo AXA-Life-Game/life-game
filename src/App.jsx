@@ -1,4 +1,4 @@
-import { Routes, Route, Outlet, Link } from "react-router-dom";
+import { Routes, Route, Link } from "react-router-dom";
 import Scoreboard from "./routes/Scoreboard.jsx";
 import GameScreen from "./routes/GameScreen.jsx";
 import Home from "./routes/Home.jsx";
