@@ -58,8 +58,6 @@ export function initGameScene(sceneName, ageCallback, gameEndCallback) {
         money += 100;
         coinsLabel.text = `${money} CHF`;
 
-        console.table(engine.progress(currentMonth).getState().lifebars);
-
         if (currentMonth % 12 === 0) {
           age = calculateAge(currentMonth);
           ageLabel.text = age;
