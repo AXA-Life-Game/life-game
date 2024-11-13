@@ -2,12 +2,12 @@ import { big } from "./game-animations";
 import { itemsConfig } from "./items-config";
 
 const defaultLevel = [
-  "                                                  ",
-  "                    ^  0                          ",
-  "                   ------             %           ",
-  "                                                  ",
-  "                            b                     ",
-  "==============================",
+  "                                      ",
+  "                    ^  0              ",
+  "                   ------            %",
+  "                                      ",
+  "                            b         ",
+  "======================================",
 ];
 
 let calculateAge = (currentMonth) => 18 + parseInt(currentMonth / 12);
@@ -75,12 +75,30 @@ export function initGameScene(sceneName) {
         layer("background"),
       ]);
 
-      function spawnRandomCoin(tilePosX, tileWidth) {
+      function spawnRandomEvent(tilePosX, tileWidth) {
         const rng = rand(0, 1);
-        // a coin has a 25% chance to spawn every block
-        if (rng > 0.75) {
+        // an event has a 25% chance to spawn every block
+        if (rng > 0.9) {
           level.spawn(
             "$",
+            tilePosX + tileWidth,
+            level.numRows() - Math.floor(rand(2, 7))
+          );
+        } else if (rng > 0.85) {
+          level.spawn(
+            "%",
+            tilePosX + tileWidth,
+            level.numRows() - Math.floor(rand(2, 7))
+          );
+        } else if (rng > 0.8) {
+          level.spawn(
+            "$",
+            tilePosX + tileWidth,
+            level.numRows() - Math.floor(rand(2, 7))
+          );
+        } else if (rng > 0.75) {
+          level.spawn(
+            "#",
             tilePosX + tileWidth,
             level.numRows() - Math.floor(rand(2, 7))
           );
@@ -130,7 +148,9 @@ export function initGameScene(sceneName) {
         if (currentTile < tilePosX) {
           level.spawn("=", tilePosX + tileWidth, level.numRows() - 1);
           currentTile = tilePosX;
-          spawnRandomCoin(tilePosX, tileWidth);
+          if (currentTile > level.numColumns()) {
+            spawnRandomEvent(tilePosX, tileWidth);
+          }
         }
       });
 
@@ -184,8 +204,8 @@ export function initGameScene(sceneName) {
         }
       });
 
+      // increasing the coin's sound pitch everytime we get a coin
       let coinPitch = 0;
-
       onUpdate(() => {
         if (coinPitch > 0) {
           coinPitch = Math.max(0, coinPitch - dt() * 100);
@@ -206,7 +226,7 @@ export function initGameScene(sceneName) {
         destroy(e);
         // if it's not from the top, die
         baby = add([
-          sprite("larry", { anim: "run" }),
+          sprite("babyLarry", { anim: "run" }),
           pos(0, 0),
           area(),
           scale(1),
@@ -226,14 +246,14 @@ export function initGameScene(sceneName) {
         }
       });
 
-      let hasApple = false;
+      let hasBacon = false;
 
       // grow an apple if player's head bumps into an obj with "prize" tag
       player.onHeadbutt((obj) => {
-        if (obj.is("prize") && !hasApple) {
+        if (obj.is("prize") && !hasBacon) {
           const apple = level.spawn("#", obj.tilePos.sub(-6, 0));
           apple.jump();
-          hasApple = true;
+          hasBacon = true;
           play("blip");
         }
       });
@@ -243,7 +263,7 @@ export function initGameScene(sceneName) {
         destroy(a);
         // as we defined in the big() component
         player.biggify(1);
-        hasApple = false;
+        hasBacon = false;
         play("powerup");
       });
 
