@@ -2,11 +2,11 @@ import { big } from "./game-animations";
 import { itemsConfig } from "./items-config";
 
 const defaultLevel = [
-  "                                                                         $$$$   ",
-  "                                                                        --------",
-  "                   ===              %                   ---     ---             ",
-  "                                                                                ",
-  "                ^   0 =      b                   ^^  0    =   > =        ^^     ",
+  "                                                  ",
+  "                    ^  0                          ",
+  "                   ------             %           ",
+  "                                                  ",
+  "                            b                     ",
   "==============================",
 ];
 
@@ -19,14 +19,13 @@ export function initGameScene(sceneName) {
     ({ levelId, money, age } = { levelId: 0, money: 0, age: 18 }) => {
       // define some constants
       const JUMP_FORCE = 1320;
-      const MOVE_SPEED = 100;
+      const MOVE_SPEED = 400;
       const FALL_DEATH = 300;
       // distance between player and the border of the screen
       const PADDING = 100;
       const TOTAL_YEARS = 70 - 18;
       const GAME_DURATION = 60;
       const YEAR_DURATION = GAME_DURATION / TOTAL_YEARS;
-      const AGE = 18;
 
       const LEVELS = [defaultLevel];
 
@@ -41,7 +40,7 @@ export function initGameScene(sceneName) {
       loop(YEAR_DURATION / 12, () => {
         currentMonth++;
 
-        money += 5000;
+        money += 100;
         coinsLabel.text = money;
 
         if (currentMonth % 12 === 0) {
@@ -57,9 +56,7 @@ export function initGameScene(sceneName) {
         area(),
         scale(2),
         // makes it fall to gravity and jumpable
-        body({
-          gravityScale: 0,
-        }),
+        body(),
         // the custom component we defined above
         big(2, 4),
         anchor("bot"),
@@ -85,7 +82,7 @@ export function initGameScene(sceneName) {
           level.spawn(
             "$",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 5)),
+            level.numRows() - Math.floor(rand(2, 7))
           );
         }
       }
@@ -100,12 +97,12 @@ export function initGameScene(sceneName) {
         if (player.pos.y < roof) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - roof,
+            player.pos.y + heightOffset - roof
           );
         } else if (player.pos.y > floor) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - floor,
+            player.pos.y + heightOffset - floor
           );
         } else {
           camPos(player.pos.x + widthOffset, heightOffset);
@@ -133,7 +130,7 @@ export function initGameScene(sceneName) {
         if (currentTile < tilePosX) {
           level.spawn("=", tilePosX + tileWidth, level.numRows() - 1);
           currentTile = tilePosX;
-          // spawnRandomCoin(tilePosX, tileWidth);
+          spawnRandomCoin(tilePosX, tileWidth);
         }
       });
 
@@ -187,6 +184,24 @@ export function initGameScene(sceneName) {
         }
       });
 
+      let coinPitch = 0;
+
+      onUpdate(() => {
+        if (coinPitch > 0) {
+          coinPitch = Math.max(0, coinPitch - dt() * 100);
+        }
+      });
+
+      player.onCollide("coin", (c) => {
+        destroy(c);
+        play("coin", {
+          detune: coinPitch,
+        });
+        coinPitch += 100;
+        money += 1000;
+        coinsLabel.text = money;
+      });
+
       player.onCollide("baby", (e) => {
         destroy(e);
         // if it's not from the top, die
@@ -215,7 +230,6 @@ export function initGameScene(sceneName) {
 
       // grow an apple if player's head bumps into an obj with "prize" tag
       player.onHeadbutt((obj) => {
-        console.log(obj.tilePos);
         if (obj.is("prize") && !hasApple) {
           const apple = level.spawn("#", obj.tilePos.sub(-6, 0));
           apple.jump();
@@ -256,6 +270,6 @@ export function initGameScene(sceneName) {
 
       onKeyPress("backspace", () => go("lose"));
       onKeyPress("escape", () => go("lose"));
-    },
+    }
   );
 }
