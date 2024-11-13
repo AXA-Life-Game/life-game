@@ -21,7 +21,7 @@ const GameScreen = () => {
   const navigate = useNavigate();
   const [timelineProps, api] = useSpring(
     () => ({
-      from: { x: 0 },
+      from: { x: (18 * -TOTAL_WIDTH) / TOTAL_MONTHS },
       to: { x: -TOTAL_WIDTH },
     }),
     [],
@@ -40,6 +40,7 @@ const GameScreen = () => {
     if (canvasRef.current && !kaplayRef.current) {
       kaplayRef.current = init(
         (currentMonth) => {
+          console.log("currentMonth", currentMonth);
           api.start({ x: (currentMonth * -TOTAL_WIDTH) / TOTAL_MONTHS });
         },
         () => {
