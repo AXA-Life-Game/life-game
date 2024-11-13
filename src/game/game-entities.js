@@ -18,7 +18,8 @@ import rentApartment from "../assets/events/rent-apartment.png";
 import robbery from "../assets/events/robbery.png";
 import salaryIncrease from "../assets/events/salary-increase.png";
 import larry from "../assets/larry-man-blue-walk.png";
-import runingKid from "../assets/pink-man-run-32x32.png";
+import larryJump from "../assets/larry-man-blue-jump.png";
+import runningKid from "../assets/pink-man-run-32x32.png";
 import idleKid from "../assets/pink-man-idle-32x32.png";
 import background from "../assets/background.png";
 
@@ -56,7 +57,7 @@ export function loadEntities() {
       },
     },
   });
-  loadSprite("babyLarry", runingKid, {
+  loadSprite("babyLarry", runningKid, {
     sliceX: 12,
     sliceY: 0,
     anims: {
@@ -80,6 +81,18 @@ export function loadEntities() {
       },
     },
   });
+  loadSprite("larryJump", larryJump, {
+    sliceX: 2,
+    sliceY: 0,
+    anims: {
+      jump: {
+        from: 0,
+        to: 1,
+        loop: false,
+        speed: 15,
+      },
+    },
+  });
   loadSprite("dino", "https://kaboomjs.com/sprites/dino.png");
   loadSprite("mushroom", "https://kaboomjs.com/sprites/mushroom.png");
   loadSprite("ghosty", "https://kaboomjs.com/sprites/ghosty.png");
@@ -87,7 +100,7 @@ export function loadEntities() {
   loadSprite("grass", "https://kaboomjs.com/sprites/grass.png");
   loadSprite("steel", "https://kaboomjs.com/sprites/steel.png");
   loadSprite("prize", "https://kaboomjs.com/sprites/jumpy.png");
-  loadSprite("apple", "https://kaboomjs.com/sprites/meat.png");
+  loadSprite("bacon", "https://kaboomjs.com/sprites/meat.png");
   loadSprite("portal", "https://kaboomjs.com/sprites/portal.png");
   loadSprite("coin", "https://kaboomjs.com/sprites/coin.png");
   loadSound("coin", "https://kaboomjs.com/examples/sounds/score.mp3");
