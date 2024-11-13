@@ -8,7 +8,7 @@ export const itemsConfig = {
     "=": () => [
       sprite("grass"),
       area(),
-      body({}),
+      body({ isStatic: true }),
       anchor("bot"),
       offscreen({ destroy: true }),
       "platform",
@@ -16,7 +16,6 @@ export const itemsConfig = {
     b: () => [
       sprite("idleKid", { anim: "idle" }),
       area(),
-      body({ isStatic: true }),
       scale(1.5),
       anchor("bot"),
       offscreen({ hide: true }),
@@ -33,7 +32,7 @@ export const itemsConfig = {
     0: () => [
       sprite("mushroom"),
       area(),
-      body({ isStatic: true }),
+      body(),
       offscreen({ hide: true }),
       anchor("bot"),
       "jumper",
@@ -57,18 +56,17 @@ export const itemsConfig = {
     "^": () => [
       sprite("spike"),
       area(),
-      body({ isStatic: true }),
       anchor("bot"),
       offscreen({ hide: true }),
       "danger",
     ],
     "#": () => [
-      sprite("apple"),
+      sprite("bacon"),
       area(),
       anchor("bot"),
       body(),
       offscreen({ hide: true }),
-      "apple",
+      "bacon",
     ],
     ">": () => [
       sprite("ghosty"),

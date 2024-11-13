@@ -69,7 +69,7 @@ export function initGameScene(sceneName) {
 
       // add background
       const background = add([
-        sprite("background", { width: 6000 }),
+        sprite("background", { width: 12000 }),
         pos(-width() / 2, levelHeight - 800),
         opacity(0.6),
         layer("background"),
@@ -88,13 +88,13 @@ export function initGameScene(sceneName) {
           level.spawn(
             "%",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 7))
+            level.numRows() - Math.floor(rand(4, 7))
           );
         } else if (rng > 0.8) {
           level.spawn(
-            "$",
+            "0",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 7))
+            level.numRows() - Math.floor(rand(2, 5))
           );
         } else if (rng > 0.75) {
           level.spawn(
@@ -102,6 +102,8 @@ export function initGameScene(sceneName) {
             tilePosX + tileWidth,
             level.numRows() - Math.floor(rand(2, 7))
           );
+        } else if (rng > 0.7) {
+          level.spawn("^", tilePosX + tileWidth, level.numRows() - 2);
         }
       }
 
@@ -167,7 +169,7 @@ export function initGameScene(sceneName) {
 
       // if player onCollide with any obj with "danger" tag, lose
       player.onCollide("danger", () => {
-        go("lose");
+        money -= 1000;
         play("hit");
       });
 
@@ -241,25 +243,25 @@ export function initGameScene(sceneName) {
       player.onCollide("jumper", (e, col) => {
         // if it's not from the top, die
         if (!col?.isBottom()) {
-          go("lose");
+          e.destroy();
           play("hit");
         }
       });
 
       let hasBacon = false;
 
-      // grow an apple if player's head bumps into an obj with "prize" tag
+      // grow a bacon if player's head bumps into an obj with "prize" tag
       player.onHeadbutt((obj) => {
         if (obj.is("prize") && !hasBacon) {
-          const apple = level.spawn("#", obj.tilePos.sub(-6, 0));
-          apple.jump();
+          const bacon = level.spawn("#", obj.tilePos.sub(-6, 0));
+          bacon.jump();
           hasBacon = true;
           play("blip");
         }
       });
 
-      // player grows big onCollide with an "apple" obj
-      player.onCollide("apple", (a) => {
+      // player grows big onCollide with an "bacon" obj
+      player.onCollide("bacon", (a) => {
         destroy(a);
         // as we defined in the big() component
         player.biggify(1);

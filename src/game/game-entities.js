@@ -87,7 +87,7 @@ export function loadEntities() {
   loadSprite("grass", "https://kaboomjs.com/sprites/grass.png");
   loadSprite("steel", "https://kaboomjs.com/sprites/steel.png");
   loadSprite("prize", "https://kaboomjs.com/sprites/jumpy.png");
-  loadSprite("apple", "https://kaboomjs.com/sprites/meat.png");
+  loadSprite("bacon", "https://kaboomjs.com/sprites/meat.png");
   loadSprite("portal", "https://kaboomjs.com/sprites/portal.png");
   loadSprite("coin", "https://kaboomjs.com/sprites/coin.png");
   loadSound("coin", "https://kaboomjs.com/examples/sounds/score.mp3");
