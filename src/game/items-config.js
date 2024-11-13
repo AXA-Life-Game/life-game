@@ -171,7 +171,7 @@ export const itemsConfig = {
       area(),
       anchor("bot"),
       offscreen({ hide: true }),
-      "kids",
+      "baby",
       "event",
     ],
     o: () => [
@@ -230,5 +230,59 @@ export const itemsConfig = {
       "salaryIncrease",
       "event",
     ],
+  },
+};
+
+export const itemsMapping = {
+  JOB: {
+    symbol: "g",
+  },
+  APARTMENT: {
+    symbol: "a",
+  },
+  "3A_INSURANCE": {
+    symbol: "t",
+  },
+  PART_TIME_JOB: {
+    symbol: "p",
+  },
+  HOUSEHOLD_INSURANCE: {
+    symbol: "l",
+  },
+  MARRIAGE: {
+    symbol: "m",
+  },
+  KIDS: {
+    symbol: "k",
+  },
+  SECOND_PILLAR: {
+    symbol: "s",
+  },
+  EDUCATION: {
+    symbol: "e",
+  },
+  SALARY_INCREASE: {
+    symbol: "n",
+  },
+  HOUSE: {
+    symbol: "h",
+  },
+  HOUSE_INSURANCE: {
+    symbol: "i",
+  },
+  LOTTERY: {
+    symbol: "o",
+  },
+  ROBBERY: {
+    symbol: "y",
+  },
+  FLOODING: {
+    symbol: "f",
+  },
+  DIVORCE: {
+    symbol: "d",
+  },
+  JOB_LOSS: {
+    symbol: "j",
   },
 };

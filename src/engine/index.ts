@@ -4,7 +4,7 @@ import { Lifebar } from "./lifebar";
 
 const jobLifeEvent = new LifeEvent();
 jobLifeEvent.type = "JOB";
-jobLifeEvent.frequency = { limit: 3 };
+jobLifeEvent.frequency = { limit: 20 };
 jobLifeEvent.effect = {
   lifebars: [new Lifebar("INCOME", 5000), new Lifebar("TAX", 550)],
   lifeEvents: [
@@ -130,7 +130,7 @@ kidsEvent.effect = {
 };
 
 const partTimeEvent = new LifeEvent();
-partTimeEvent.type = "KIDS";
+partTimeEvent.type = "PART_TIME_JOB";
 partTimeEvent.frequency = { limit: 0 };
 partTimeEvent.effect = {
   lifebars: [new Lifebar("INCOME", -1500), new Lifebar("TAX", -200)],
@@ -145,7 +145,7 @@ partTimeEvent.effect = {
 };
 
 const secondPillarEvent = new LifeEvent();
-secondPillarEvent.type = "KIDS";
+secondPillarEvent.type = "SECOND_PILLAR";
 secondPillarEvent.frequency = { limit: 0 };
 secondPillarEvent.effect = {
   lifebars: [new Lifebar("MONEY", -20000), new Lifebar("TAX", -3000)],
@@ -202,7 +202,7 @@ houseInsuranceEvent.effect = {
 //followed by additional life event 2nd pillar
 const lotteryEvent = new LifeEvent();
 lotteryEvent.type = "LOTTERY";
-lotteryEvent.frequency = { limit: 0.2 };
+lotteryEvent.frequency = { limit: 0 };
 lotteryEvent.effect = {
   lifebars: [new Lifebar("MONEY", 200000)],
   lifeEvents: [
@@ -217,7 +217,7 @@ lotteryEvent.effect = {
 
 const robberyEvent = new LifeEvent();
 robberyEvent.type = "ROBBERY";
-robberyEvent.frequency = { limit: 2 };
+robberyEvent.frequency = { limit: 0 };
 robberyEvent.effect = {
   lifebars: [new Lifebar("MONEY", -5000)],
   lifeEvents: [],
@@ -225,7 +225,7 @@ robberyEvent.effect = {
 
 const floodingEvent = new LifeEvent();
 floodingEvent.type = "FLOODING";
-floodingEvent.frequency = { limit: 3 };
+floodingEvent.frequency = { limit: 0 };
 floodingEvent.effect = {
   lifebars: [new Lifebar("MONEY", -5000)],
   lifeEvents: [],
@@ -241,7 +241,7 @@ divorceEvent.effect = {
 
 const jobLossEvent = new LifeEvent();
 jobLossEvent.type = "JOB_LOSS";
-jobLossEvent.frequency = { limit: 1 };
+jobLossEvent.frequency = { limit: 0 };
 jobLossEvent.effect = {
   lifebars: [new Lifebar("INCOME", -20)],
   lifeEvents: [
@@ -254,31 +254,37 @@ jobLossEvent.effect = {
     {
       type: "JOB_LOSS",
       frequency: {
-        limit: 1,
+        limit: 0,
       },
     },
   ],
 };
 
-export const gameEngine = (     endGame: CallableFunction,
-     lostGame: CallableFunction): GameEngine => {
-  return new GameEngine([
-    jobLifeEvent,
-    apartmentLifeEvent,
-    householdLiabilityInsuranceEvent,
-    threeAInsuranceEvent,
-    marriageEvent,
-    kidsEvent,
-    partTimeEvent,
-    secondPillarEvent,
-    educationEvent,
-    salaryIncreaseEvent,
-    buyHouseEvent,
-    houseInsuranceEvent,
-    lotteryEvent,
-    robberyEvent,
-    floodingEvent,
-    jobLossEvent,
-    divorceEvent,
-  ], endGame, lostGame);
+export const gameEngine = (
+  endGame: CallableFunction,
+  lostGame: CallableFunction
+): GameEngine => {
+  return new GameEngine(
+    [
+      jobLifeEvent,
+      apartmentLifeEvent,
+      householdLiabilityInsuranceEvent,
+      threeAInsuranceEvent,
+      marriageEvent,
+      kidsEvent,
+      partTimeEvent,
+      secondPillarEvent,
+      educationEvent,
+      salaryIncreaseEvent,
+      buyHouseEvent,
+      houseInsuranceEvent,
+      lotteryEvent,
+      robberyEvent,
+      floodingEvent,
+      jobLossEvent,
+      divorceEvent,
+    ],
+    endGame,
+    lostGame
+  );
 };
