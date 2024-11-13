@@ -258,4 +258,13 @@ export class GameEngine {
 
     return nuggets;
   }
+
+  public calculateScore(): number {
+    return this.state.lifebars.reduce((acc, lifebar) => {
+        if (lifebar.getType() === "THIRDPILLAR" || lifebar.getType() === "SECONDPILLAR") {
+            return acc;
+        }
+        return acc + lifebar.getValue();
+    }, 0);
+  }
 }
