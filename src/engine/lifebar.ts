@@ -11,6 +11,13 @@ export class Lifebar {
         this.value = value;
     }
 
+    public getType(): LifebarType {
+        return this.type;
+
+    public getValue(): number {
+        return this.value;
+    }
+
     public applyEffect(effect: LifeEventEffect): void {
         effect.lifebars.forEach((lifebar) => {
             if (lifebar.type === this.type) {
