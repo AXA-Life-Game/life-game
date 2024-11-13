@@ -2,16 +2,13 @@ import { gameEngine } from "../engine";
 import { big } from "./game-animations";
 import { itemsConfig, itemsMapping } from "./items-config";
 
-const demo = {
-  25: "g",
-  37: "p",
-};
-
 const defaultLevel = [
-  "                             ",
-  "                             ",
-  "       ^                     ",
-  "=============================",
+  "                                    g                                                                    ",
+  "                                  -----                                         p                        ",
+  "                           ---                                                 ---                       ",
+  "                                                                                                         ",
+  "                                                  k                                                      ",
+  "==========================================================================================================",
 ];
 
 let calculateAge = (currentMonth) => 18 + parseInt(currentMonth / 12);
