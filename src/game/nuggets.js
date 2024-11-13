@@ -1,12 +1,12 @@
-import PartTime from "../assets/part-time.png";
-import Divorce from "../assets/divorce.png";
-import BuyHouse from "../assets/buy-house.png";
-import TaxSaving from "../assets/tax-saving.png";
-import NaturalDesasters from "../assets/natural-desasters.png";
-import Robbery from "../assets/robbery.png";
-import Education from "../assets/education.png";
-import Debt from "../assets/debt.png";
-import Trophy from "../assets/trophy.png";
+import PartTime from "../assets/learningnuggets/part-time.png";
+import Divorce from "../assets/learningnuggets/divorce.png";
+import BuyHouse from "../assets/learningnuggets/buy-house.png";
+import TaxSaving from "../assets/learningnuggets/tax-saving.png";
+import NaturalDesasters from "../assets/learningnuggets/natural-desasters.png";
+import Robbery from "../assets/learningnuggets/robbery.png";
+import Education from "../assets/learningnuggets/education.png";
+import Debt from "../assets/learningnuggets/debt.png";
+import Trophy from "../assets/learningnuggets/trophy.png";
 
 const Nuggets = [
   {
