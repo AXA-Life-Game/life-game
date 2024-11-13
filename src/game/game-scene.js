@@ -6,12 +6,31 @@ const defaultLevel = [
   "                    ^  0              ",
   "                   ------            %",
   "                                      ",
-  "                            b         ",
+  "            s                b         ",
   "======================================",
 ];
 
 let calculateAge = (currentMonth) => 18 + parseInt(currentMonth / 12);
-let currentMonth = 0;
+const lifeEvents = [
+  "s",
+  "t",
+  "h",
+  "d",
+  "e",
+  "f",
+  "g",
+  "i",
+  "l",
+  "j",
+  "k",
+  "o",
+  "m",
+  "p",
+  "r",
+  "a",
+  "y",
+  "n",
+];
 
 export function initGameScene(sceneName) {
   scene(
@@ -36,7 +55,7 @@ export function initGameScene(sceneName) {
       wait(GAME_DURATION, () => go("win", { coins: money }));
 
       // Main Timeline Loop
-
+      let currentMonth = 0;
       loop(YEAR_DURATION / 12, () => {
         currentMonth++;
 
@@ -78,32 +97,32 @@ export function initGameScene(sceneName) {
       function spawnRandomEvent(tilePosX, tileWidth) {
         const rng = rand(0, 1);
         // an event has a 25% chance to spawn every block
-        if (rng > 0.9) {
-          level.spawn(
-            "$",
-            tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 7)),
-          );
-        } else if (rng > 0.85) {
+        if (rng > 0.98) {
           level.spawn(
             "%",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(4, 7)),
+            level.numRows() - Math.floor(rand(4, 7))
           );
-        } else if (rng > 0.8) {
+        } else if (rng > 0.96) {
+          level.spawn("^", tilePosX + tileWidth, level.numRows() - 2);
+        } else if (rng > 0.94) {
           level.spawn(
             "0",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 5)),
+            level.numRows() - Math.floor(rand(2, 5))
           );
-        } else if (rng > 0.75) {
+        } else if (rng > 0.92) {
           level.spawn(
-            "#",
+            "$",
             tilePosX + tileWidth,
-            level.numRows() - Math.floor(rand(2, 7)),
+            level.numRows() - Math.floor(rand(2, 7))
           );
-        } else if (rng > 0.7) {
-          level.spawn("^", tilePosX + tileWidth, level.numRows() - 2);
+        } else if (rng > 0.85) {
+          level.spawn(
+            lifeEvents[Math.floor(rand(lifeEvents.length))],
+            tilePosX + tileWidth,
+            level.numRows() - Math.floor(rand(2, 7))
+          );
         }
       }
 
@@ -117,12 +136,12 @@ export function initGameScene(sceneName) {
         if (player.pos.y < roof) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - roof,
+            player.pos.y + heightOffset - roof
           );
         } else if (player.pos.y > floor) {
           camPos(
             player.pos.x + widthOffset,
-            player.pos.y + heightOffset - floor,
+            player.pos.y + heightOffset - floor
           );
         } else {
           camPos(player.pos.x + widthOffset, heightOffset);
@@ -221,6 +240,11 @@ export function initGameScene(sceneName) {
         }
       });
 
+      player.onCollide("event", (e) => {
+        e.destroy();
+        play("blip");
+      });
+
       // increasing the coin's sound pitch everytime we get a coin
       let coinPitch = 0;
       onUpdate(() => {
@@ -240,7 +264,6 @@ export function initGameScene(sceneName) {
       });
 
       player.onCollide("baby", (e) => {
-        destroy(e);
         // if it's not from the top, die
         baby = add([
           sprite("babyLarry", { anim: "run" }),
@@ -308,6 +331,6 @@ export function initGameScene(sceneName) {
 
       onKeyPress("backspace", () => go("lose"));
       onKeyPress("escape", () => go("lose"));
-    },
+    }
   );
 }

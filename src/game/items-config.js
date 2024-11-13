@@ -20,6 +20,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "baby",
+      "event",
     ],
     "-": () => [
       sprite("steel"),
@@ -91,6 +92,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "secondPillar",
+      "event",
     ],
     t: () => [
       sprite("threeAInsurance"),
@@ -98,6 +100,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "threeAInsurance",
+      "event",
     ],
     h: () => [
       sprite("buyHouse"),
@@ -105,6 +108,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "buyHouse",
+      "event",
     ],
     d: () => [
       sprite("divorce"),
@@ -112,6 +116,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "divorce",
+      "event",
     ],
     e: () => [
       sprite("education"),
@@ -119,6 +124,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "education",
+      "event",
     ],
     f: () => [
       sprite("flooding"),
@@ -126,6 +132,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "flooding",
+      "event",
     ],
     g: () => [
       sprite("getJob"),
@@ -133,6 +140,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "getJob",
+      "event",
     ],
     i: () => [
       sprite("houseInsurance"),
@@ -140,6 +148,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "houseInsurance",
+      "event",
     ],
     l: () => [
       sprite("householdLiabilityInsurance"),
@@ -147,6 +156,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "householdLiabilityInsurance",
+      "event",
     ],
     j: () => [
       sprite("jobLoss"),
@@ -154,6 +164,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "jobLoss",
+      "event",
     ],
     k: () => [
       sprite("kids"),
@@ -161,6 +172,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "kids",
+      "event",
     ],
     o: () => [
       sprite("lottery"),
@@ -168,6 +180,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "lottery",
+      "event",
     ],
     m: () => [
       sprite("marriage"),
@@ -175,6 +188,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "marriage",
+      "event",
     ],
     p: () => [
       sprite("partTime"),
@@ -182,6 +196,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "partTime",
+      "event",
     ],
     r: () => [
       sprite("randomEvent"),
@@ -189,6 +204,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "randomEvent",
+      "event",
     ],
     a: () => [
       sprite("rentApartment"),
@@ -196,6 +212,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "rentApartment",
+      "event",
     ],
     y: () => [
       sprite("robbery"),
@@ -203,6 +220,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "robbery",
+      "event",
     ],
     n: () => [
       sprite("salaryIncrease"),
@@ -210,6 +228,7 @@ export const itemsConfig = {
       anchor("bot"),
       offscreen({ hide: true }),
       "salaryIncrease",
+      "event",
     ],
   },
 };
