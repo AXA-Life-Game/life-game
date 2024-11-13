@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { Stack } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import Button from "../components/Button.jsx";
 import { useNavigate } from "react-router-dom";
-import { useFullscreen, useOrientation, useToggle } from "react-use";
+import { useFullscreen, useToggle } from "react-use";
 import Logo from "../components/Logo.jsx";
 import { animated, config, useSpring } from "@react-spring/web";
 
@@ -10,6 +10,7 @@ const AnimatedButton = animated(Button);
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
+  const [showOverlay, setShowOverlay] = useState(true);
   const navigate = useNavigate();
 
   const ref = useRef(null);
@@ -29,8 +30,6 @@ const Home = () => {
     [],
   );
 
-  const orientation = useOrientation();
-
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
@@ -47,6 +46,27 @@ const Home = () => {
         gap: 8,
       }}
     >
+      {showOverlay && (
+        <Box
+          sx={{
+            position: "absolute",
+            height: "100%",
+            width: "100%",
+            backgroundColor: "#9FD9B4",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            zIndex: 1,
+            fontSize: 32,
+          }}
+          onClick={() => {
+            setShowOverlay(false);
+          }}
+        >
+          Press Any Key
+        </Box>
+      )}
+
       <Logo />
       <AnimatedButton
         style={buttonStyle}
