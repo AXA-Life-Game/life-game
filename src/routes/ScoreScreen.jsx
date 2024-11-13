@@ -8,39 +8,46 @@ const ScoreScreen = () => {
   const [ref, { width, height }] = useMeasure();
 
   return (
-    <Box>
-      <Stack gap={4} alignItems={"center"} mt={10}>
-        <Container>
-          <PageHeader>Dein Vermögen</PageHeader>
-          <Box
-            sx={{
-              color: "#00008F",
-              fontSize: "32px",
-              fontFamily: "Bungee",
-              textAlign: "center",
+    <Box
+      sx={{
+        height: "100%",
+        py: 4,
+      }}
+    >
+      <Box>
+        <Stack gap={4} alignItems={"center"} mt={10}>
+          <Container>
+            <PageHeader>Dein Vermögen</PageHeader>
+            <Box
+              sx={{
+                color: "#00008F",
+                fontSize: "32px",
+                fontFamily: "Bungee",
+                textAlign: "center",
+              }}
+            >
+              1.500.000
+            </Box>
+          </Container>
+          <Box color={"#fff"}>
+            Gib deinen Namen ein und du siehst die Rangliste
+          </Box>
+          <Box>
+            <form>
+              <label>
+                <input type="text" />
+              </label>
+            </form>
+          </Box>
+          <Button
+            onClick={() => {
+              navigate("/");
             }}
           >
-            1.500.000
-          </Box>
-        </Container>
-        <Box color={"#fff"}>
-          Gib deinen Namen ein und du siehst die Rangliste
-        </Box>
-        <Box>
-          <form>
-            <label>
-              <input type="text" />
-            </label>
-          </form>
-        </Box>
-        <Button
-          onClick={() => {
-            navigate("/");
-          }}
-        >
-          Scoreboard
-        </Button>
-      </Stack>
+            Scoreboard
+          </Button>
+        </Stack>
+      </Box>
     </Box>
   );
 };
