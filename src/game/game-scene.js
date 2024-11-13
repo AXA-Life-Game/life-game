@@ -56,7 +56,7 @@ export function initGameScene(sceneName, ageCallback, gameEndCallback) {
         ageCallback(currentMonth);
 
         money += 100;
-        coinsLabel.text = money;
+        coinsLabel.text = `${money} CHF`;
 
         console.table(engine.progress(currentMonth).getState().lifebars);
 
@@ -240,7 +240,7 @@ export function initGameScene(sceneName, ageCallback, gameEndCallback) {
         });
         coinPitch += 100;
         money += 1000;
-        coinsLabel.text = money;
+        coinsLabel.text = `${money} CHF`;
       });
 
       player.onCollide("baby", () => {

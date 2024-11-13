@@ -37,7 +37,12 @@ const LearningNuggetsScreen = () => {
           }}
         >
           <Box ref={ref} sx={{ height: "100%", width: "100%", maxWidth: 420 }}>
-            {width && <LearningNuggetsSlider width={width} cards={hints} />}
+            {width && (
+              <LearningNuggetsSlider
+                width={width}
+                cards={[hints[0], hints[1], hints[3]]}
+              />
+            )}
           </Box>
         </Box>
         <Button
