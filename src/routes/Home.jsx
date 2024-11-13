@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from "react";
-import Loader from "../components/Loader.jsx";
-import { Box, Stack } from "@mui/system";
+import { Stack } from "@mui/system";
 import Button from "../components/Button.jsx";
 import { useNavigate } from "react-router-dom";
 import { useFullscreen, useOrientation, useToggle } from "react-use";
 import Logo from "../components/Logo.jsx";
+import { animated, config, useSpring } from "@react-spring/web";
+
+const AnimatedButton = animated(Button);
 
 const Home = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -17,6 +19,16 @@ const Home = () => {
       toggle(false);
     },
   });
+  const [buttonStyle] = useSpring(
+    () => ({
+      from: { opacity: 0, scale: 0.8 },
+      to: { opacity: 1, scale: 1 },
+      delay: 600,
+      config: config.stiff,
+    }),
+    [],
+  );
+
   const orientation = useOrientation();
 
   useEffect(() => {
@@ -36,17 +48,14 @@ const Home = () => {
       }}
     >
       <Logo />
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <Button
-          onClick={() => {
-            navigate("/game");
-          }}
-        >
-          Start
-        </Button>
-      )}
+      <AnimatedButton
+        style={buttonStyle}
+        onClick={() => {
+          navigate("/game");
+        }}
+      >
+        Start
+      </AnimatedButton>
     </Stack>
   );
 };

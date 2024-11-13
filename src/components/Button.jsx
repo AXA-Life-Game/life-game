@@ -1,8 +1,10 @@
 import { Box } from "@mui/system";
+import { forwardRef } from "react";
 
-const Button = ({ children, ...props }) => {
+const Button = forwardRef(({ children, ...props }, ref) => {
   return (
     <Box
+      ref={ref}
       sx={{
         display: "flex",
         justifyContent: "center",
@@ -23,6 +25,6 @@ const Button = ({ children, ...props }) => {
       {children}
     </Box>
   );
-};
+});
 
 export default Button;
