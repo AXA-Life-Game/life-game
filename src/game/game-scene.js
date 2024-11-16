@@ -1,7 +1,7 @@
 import { gameEngine } from "../engine";
 import { big } from "./game-animations";
 import { itemsConfig, itemsMapping } from "./items-config";
-import { getRandomEvents } from "../core/Generator.js";
+import { getNextEvent, getRandomEvents } from "../core/Generator.js";
 import { getLifeEventByKey, LIFE_EVENTS } from "../core/LifeEvent.js";
 import { applyEffects } from "../core/Effect.js";
 
@@ -23,7 +23,7 @@ export function initGameScene(
   gameState,
 ) {
   scene(sceneName, ({ levelId } = { levelId: 0 }) => {
-    console.log("engine init");
+    const game = add([timer()]);
     const engine = gameEngine(
       () => console.log("win"),
       () => console.log("lost"),
@@ -45,7 +45,7 @@ export function initGameScene(
     const level = addLevel(LEVELS[levelId ?? 0], itemsConfig);
 
     // wait for some time and trigger the win
-    wait(GAME_DURATION, () => {
+    game.wait(GAME_DURATION, () => {
       gameEndCallback();
       go("win", {});
     });
@@ -56,41 +56,57 @@ export function initGameScene(
 
     // Main Timeline Loop
     let currentMonth = 0;
-    loop(YEAR_DURATION * 2, () => {
-      const events = getRandomEvents(gameState.current.lifeEvents);
-      events.forEach((event, index) => {
-        console.log("spawb", event.icon);
-        // spawnRandomEvent(tilePosX + index, event);
-        const addedObject = level.spawn(
-          event.icon,
-          currentTile + tileWidth + index,
-          level.numRows() - Math.floor(rand(2, 7)),
-        );
+    let lastEvent = null;
+    game.loop(YEAR_DURATION * 2, () => {
+      const nextEvent = getNextEvent(
+        lastEvent,
+        gameState.current.probabilityMatrix,
+      );
 
-        addedObject.eventKey = event.key;
-      });
-    });
-    loop(YEAR_DURATION / 12, () => {
-      currentMonth++;
-
-      ageCallback(currentMonth);
-
-      gameState.current.lifeIndicators.MONEY.value +=
-        gameState.current.lifeIndicators.SALARY.value -
-        gameState.current.lifeIndicators.EXPENSES.value -
-        gameState.current.lifeIndicators.TAXES.value;
-      coinsLabel.text = `${gameState.current.lifeIndicators.MONEY.value} CHF`;
-
-      // console.table(engine.progress(currentMonth).getState().lifebars);
-
-      if (currentMonth % 12 === 0) {
-        gameState.current.lifeIndicators.AGE.value = calculateAge(currentMonth);
-        ageLabel.text = gameState.current.lifeIndicators.AGE.value;
+      if (!nextEvent) {
+        console.log("no possible events found");
+        return;
       }
+      const event = gameState.current.lifeEvents.find(
+        (item) => item.icon === nextEvent,
+      );
+
+      console.log("Next event", nextEvent);
+      const addedObject = level.spawn(
+        event.icon,
+        currentTile + tileWidth,
+        level.numRows() - Math.floor(rand(2, 7)),
+      );
+
+      addedObject.eventKey = event.key;
     });
+    game.loop(
+      YEAR_DURATION / 12,
+      () => {
+        currentMonth++;
+
+        ageCallback(currentMonth);
+
+        gameState.current.lifeIndicators.MONEY.value +=
+          gameState.current.lifeIndicators.SALARY.value -
+          gameState.current.lifeIndicators.EXPENSES.value -
+          gameState.current.lifeIndicators.TAXES.value;
+        coinsLabel.text = `${gameState.current.lifeIndicators.MONEY.value} CHF`;
+
+        // console.table(engine.progress(currentMonth).getState().lifebars);
+
+        if (currentMonth % 12 === 0) {
+          gameState.current.lifeIndicators.AGE.value =
+            calculateAge(currentMonth);
+          ageLabel.text = gameState.current.lifeIndicators.AGE.value;
+        }
+      },
+      -1,
+      true,
+    );
 
     // define player object
-    const player = add([
+    const player = game.add([
       sprite("larry", { anim: "run" }),
       pos(0, 0),
       area(),
@@ -191,7 +207,6 @@ export function initGameScene(
 
     // if player onCollide with any obj with "danger" tag, lose
     player.onCollide("danger", () => {
-      money -= 1000;
       play("portal");
       flicker(player);
     });
@@ -237,10 +252,11 @@ export function initGameScene(
           e.eventKey,
         );
 
+        lastEvent = event.icon;
+
         console.log("collect", event.icon);
 
         gameState.current = applyEffects(event.effects, gameState.current);
-        console.log("state:", gameState.current);
       }
       e.destroy();
       play("blip");
@@ -308,6 +324,10 @@ export function initGameScene(
         player.use(sprite("larryJump", { anim: "jump" }));
       }
     }
+
+    onKeyPress("p", () => {
+      game.paused = !game.paused;
+    });
 
     // jump with space
     onKeyPress("space", jump);

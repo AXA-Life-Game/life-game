@@ -6,7 +6,6 @@ import { useState } from "react";
 import { useInterval } from "usehooks-ts";
 import { differenceInMilliseconds, intervalToDuration } from "date-fns";
 
-const AnimatedButton = animated(Button);
 const AnimatedStack = animated(Stack);
 const AnimatedBox = animated(Box);
 const RELEASE_DATE = new Date(2024, 10, 18, 0);
@@ -75,19 +74,19 @@ const GameMenu = () => {
           }}
         >
           <Stack alignItems={"center"}>
-            <Box sx={{ fontSize: 32 }}>{diff.days}</Box>
+            <Box sx={{ fontSize: 32 }}>{diff.days || 0}</Box>
             <Box>Days</Box>
           </Stack>
           <Stack alignItems={"center"}>
-            <Box sx={{ fontSize: 32 }}>{diff.hours}</Box>
+            <Box sx={{ fontSize: 32 }}>{diff.hours || 0}</Box>
             <Box>Hours</Box>
           </Stack>
           <Stack alignItems={"center"}>
-            <Box sx={{ fontSize: 32 }}>{diff.minutes}</Box>
+            <Box sx={{ fontSize: 32 }}>{diff.minutes || 0}</Box>
             <Box>Minutes</Box>
           </Stack>
           <Stack alignItems={"center"}>
-            <Box sx={{ fontSize: 32 }}>{diff.seconds}</Box>
+            <Box sx={{ fontSize: 32 }}>{diff.seconds || 0}</Box>
             <Box>Seconds</Box>
           </Stack>
         </AnimatedStack>

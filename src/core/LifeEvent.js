@@ -1,5 +1,23 @@
 import { lifeEventEffect, lifeIndicatorEffect, set, add } from "./Effect.js";
+import ProbabilityMatrixJson from "./ProbabilityMatrix.json";
 
+// 💼 - getting job
+// 🏢 - rent apartment
+// 🚡️ - household liability insurance
+// 🏦 - 3a insurance
+// 💍 - marriage
+// 👶 - kids
+// 🕒 - part time
+// 🏛️ - 2nd pillar
+// 🎓 - education
+// 🤑 - salary increase
+// 🏠 - buy house
+// 🏠🚡️house insurance
+// 🎲 - lottery winning
+// 🧙 - robbery
+// 🌊 - flooding
+// 💔 - divorce
+// 💼❌ - lose job
 export const LIFE_EVENTS = [
   {
     key: "GET_JOB",
@@ -153,6 +171,8 @@ export const LIFE_EVENTS = [
     ],
   },
 ];
+
+export const ProbabilityMatrix = ProbabilityMatrixJson;
 
 export const getLifeEventByKey = (lifeEvents, key) => {
   return lifeEvents.find((event) => event.key === key);

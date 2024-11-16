@@ -1,54 +1,70 @@
-import { Button, Input, Option, Select, Table } from "@mui/joy";
-import { Stack } from "@mui/system";
+import { Button, Input, Table } from "@mui/joy";
+import { Controller, useForm } from "react-hook-form";
+import { Box, Stack } from "@mui/system";
 
 const Editor = ({ gameState }) => {
+  const eventsList = gameState.current.lifeEvents;
+  const { control, handleSubmit, getValues } = useForm({
+    defaultValues: gameState.current.probabilityMatrix,
+  });
+
+  const onSubmit = (data) => {
+    gameState.current.probabilityMatrix = data;
+  };
+
   return (
-    <Table>
-      <thead>
-        <tr>
-          <th width={"36px"}>Icon</th>
-          <th>Title</th>
-          <th width={"100px"}>Probability</th>
-          <th>Effects</th>
-        </tr>
-      </thead>
-      <tbody>
-        {gameState.lifeEvents.map((lifeEvent) => (
-          <tr key={lifeEvent.key}>
-            <td>
-              <Input value={lifeEvent.icon} size={"sm"} />
-            </td>
-            <td>
-              <Input value={lifeEvent.key} size={"sm"} />
-            </td>
-            <td>
-              <Input value={lifeEvent.probability} size={"sm"} />
-            </td>
-            <td>
-              <Stack gap={2}>
-                {lifeEvent.effects.map((effect, index) => {
-                  return (
-                    <Stack direction={"row"} key={index} gap={2}>
-                      <Select value={effect.key} size={"sm"}>
-                        {gameState.lifeEvents.map((event) => {
-                          return (
-                            <Option value={event.key} key={event.key}>
-                              {event.icon}&nbsp;
-                              {event.key}
-                            </Option>
-                          );
-                        })}
-                      </Select>
-                    </Stack>
-                  );
-                })}
-              </Stack>
-              <Button variant="solid">Add</Button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </Table>
+    <Stack gap={2}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Table size={"xs"}>
+          <thead>
+            <tr>
+              <th width={"36px"}></th>
+              {eventsList.map((item) => (
+                <th key={item.key}>{item.icon}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {gameState.current.lifeEvents.map((lifeEvent) => (
+              <tr key={lifeEvent.key}>
+                <td>{lifeEvent.icon}</td>
+                {gameState.current.lifeEvents.map((event) => (
+                  <td key={event.key}>
+                    <Controller
+                      defaultValue={0}
+                      name={`${lifeEvent.icon}.${event.icon}`}
+                      control={control}
+                      render={({ field }) => (
+                        <Input
+                          size={"xs"}
+                          variant={"soft"}
+                          value={field.value}
+                          onChange={field.onChange}
+                        />
+                      )}
+                    />
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </Table>
+
+        <Box>
+          <Button type={"submit"}>Apply</Button>
+        </Box>
+      </form>
+
+      <Box>
+        <Button
+          onClick={() => {
+            console.log(getValues());
+          }}
+        >
+          Export
+        </Button>
+      </Box>
+    </Stack>
   );
 };
 

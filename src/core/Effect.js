@@ -56,7 +56,10 @@ export const applyLifeEventChanges = (lifeEvent, changes) => {
   );
 };
 
-export const applyEffects = (effects, { lifeIndicators, lifeEvents }) => {
+export const applyEffects = (
+  effects,
+  { lifeIndicators, lifeEvents, probabilityMatrix },
+) => {
   return effects.reduce(
     (acc, effect) => {
       return {
@@ -87,6 +90,7 @@ export const applyEffects = (effects, { lifeIndicators, lifeEvents }) => {
     {
       lifeIndicators,
       lifeEvents,
+      probabilityMatrix,
     },
   );
 };

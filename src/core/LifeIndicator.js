@@ -27,4 +27,8 @@ export const LifeIndicators = {
     key: "SECOND_PILLAR",
     value: 0,
   },
+  MARRIED: {
+    key: "MARRIED",
+    value: false,
+  },
 };

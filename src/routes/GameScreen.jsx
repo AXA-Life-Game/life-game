@@ -2,19 +2,15 @@ import { createRef, useEffect, useRef } from "react";
 import init from "../game.js";
 import { Box, Stack } from "@mui/system";
 import kaplay from "kaplay";
-import Timeline, {
+import {
   TIMELINE_AGE_ARRAY,
   TIMELINE_YEAR_WIDTH,
 } from "../components/Timeline.jsx";
 import { useSpring } from "@react-spring/web";
 import { useNavigate } from "react-router-dom";
-import { LIFE_EVENTS } from "../core/LifeEvent.js";
-import CardHeader from "../components/CardHeader.jsx";
-import Card from "../components/Card.jsx";
-import CardContent from "../components/CardContent.jsx";
-import { Input, Table } from "@mui/joy";
-import Editor from "../components/Editor.jsx";
+import { LIFE_EVENTS, ProbabilityMatrix } from "../core/LifeEvent.js";
 import { LifeIndicators } from "../core/LifeIndicator.js";
+import Editor from "../components/Editor.jsx";
 
 const TOTAL_YEARS = TIMELINE_AGE_ARRAY.length;
 const TOTAL_MONTHS = TOTAL_YEARS * 12;
@@ -26,6 +22,7 @@ const GameScreen = () => {
   const gameState = useRef({
     lifeEvents: LIFE_EVENTS,
     lifeIndicators: LifeIndicators,
+    probabilityMatrix: ProbabilityMatrix,
   });
 
   const navigate = useNavigate();
@@ -82,9 +79,9 @@ const GameScreen = () => {
         </Box>
       </Box>
 
-      {/*<Box sx={{ background: "#fff", width: 820 }} gap={2}>*/}
-      {/*  <Editor gameState={gameState.current} />*/}
-      {/*</Box>*/}
+      <Box sx={{ background: "#fff", width: 920, p: 2 }} gap={2}>
+        <Editor gameState={gameState} />
+      </Box>
     </Stack>
   );
 };
