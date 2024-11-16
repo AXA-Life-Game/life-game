@@ -2,29 +2,27 @@ import { Box, Stack } from "@mui/system";
 import Logo from "./Logo.jsx";
 import { animated, config, useSpring } from "@react-spring/web";
 import Button from "./Button.jsx";
-import { useNavigate } from "react-router-dom";
-import { useRef } from "react";
-import { useToggle } from "react-use";
+import { useState } from "react";
 import { useInterval } from "usehooks-ts";
-import { differenceInSeconds, intervalToDuration } from "date-fns";
+import { differenceInMilliseconds, intervalToDuration } from "date-fns";
 
 const AnimatedButton = animated(Button);
+const AnimatedStack = animated(Stack);
 const AnimatedBox = animated(Box);
-const RELEASE_DATE = new Date(2024, 11, 14, 15);
+const RELEASE_DATE = new Date(2024, 10, 18, 0);
 
 const GameMenu = () => {
-  const navigate = useNavigate();
-
-  const ref = useRef(null);
-  const [show, toggle] = useToggle(false);
-
+  const [diff, setDiff] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
   useInterval(() => {
-    // Your custom logic here
-    console.log(
-      "count",
+    setDiff(
       intervalToDuration({
         start: 0,
-        end: differenceInSeconds(new Date(), RELEASE_DATE),
+        end: differenceInMilliseconds(RELEASE_DATE, new Date()),
       }),
     );
   }, 1000);
@@ -41,7 +39,7 @@ const GameMenu = () => {
 
   const [comingSoon] = useSpring(
     () => ({
-      from: { opacity: 0, scale: 0.8 },
+      from: { opacity: 0, scale: 1 },
       to: { opacity: 1, scale: 1 },
       delay: 1200,
       config: config.molasses,
@@ -62,27 +60,37 @@ const GameMenu = () => {
       <Logo />
 
       <AnimatedBox
-        style={comingSoon}
         sx={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Box
-          sx={{
-            fontSize: 48,
-          }}
-        >
-          Coming Soon...
-        </Box>
-        <Box
+        <AnimatedStack
+          style={comingSoon}
+          direction={"row"}
+          gap={4}
           sx={{
             fontSize: 24,
           }}
         >
-          In 23 Hours
-        </Box>
+          <Stack alignItems={"center"}>
+            <Box sx={{ fontSize: 32 }}>{diff.days}</Box>
+            <Box>Days</Box>
+          </Stack>
+          <Stack alignItems={"center"}>
+            <Box sx={{ fontSize: 32 }}>{diff.hours}</Box>
+            <Box>Hours</Box>
+          </Stack>
+          <Stack alignItems={"center"}>
+            <Box sx={{ fontSize: 32 }}>{diff.minutes}</Box>
+            <Box>Minutes</Box>
+          </Stack>
+          <Stack alignItems={"center"}>
+            <Box sx={{ fontSize: 32 }}>{diff.seconds}</Box>
+            <Box>Seconds</Box>
+          </Stack>
+        </AnimatedStack>
       </AnimatedBox>
     </Stack>
   );

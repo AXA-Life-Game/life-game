@@ -42,14 +42,7 @@ const LearningNuggetsScreen = () => {
           }}
         >
           <Box ref={ref} sx={{ height: "100%", width: "100%", maxWidth: 420 }}>
-            {width && (
-              <LearningNuggetsSlider
-                width={width}
-                cards={gameEngine
-                  .generateNuggets()
-                  .map((id) => nuggets.find((nugget) => nugget.id === id))}
-              />
-            )}
+            {width && <LearningNuggetsSlider width={width} cards={nuggets} />}
           </Box>
         </Box>
         <Button

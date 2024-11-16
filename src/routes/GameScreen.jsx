@@ -1,6 +1,6 @@
-import { createRef, useEffect } from "react";
+import { createRef, useEffect, useRef } from "react";
 import init from "../game.js";
-import { Box } from "@mui/system";
+import { Box, Stack } from "@mui/system";
 import kaplay from "kaplay";
 import Timeline, {
   TIMELINE_AGE_ARRAY,
@@ -8,6 +8,13 @@ import Timeline, {
 } from "../components/Timeline.jsx";
 import { useSpring } from "@react-spring/web";
 import { useNavigate } from "react-router-dom";
+import { LIFE_EVENTS } from "../core/LifeEvent.js";
+import CardHeader from "../components/CardHeader.jsx";
+import Card from "../components/Card.jsx";
+import CardContent from "../components/CardContent.jsx";
+import { Input, Table } from "@mui/joy";
+import Editor from "../components/Editor.jsx";
+import { LifeIndicators } from "../core/LifeIndicator.js";
 
 const TOTAL_YEARS = TIMELINE_AGE_ARRAY.length;
 const TOTAL_MONTHS = TOTAL_YEARS * 12;
@@ -16,7 +23,10 @@ const TOTAL_WIDTH = TIMELINE_YEAR_WIDTH * TOTAL_YEARS;
 const GameScreen = () => {
   const canvasRef = createRef();
   const kaplayRef = createRef();
-  const editorRef = createRef();
+  const gameState = useRef({
+    lifeEvents: LIFE_EVENTS,
+    lifeIndicators: LifeIndicators,
+  });
 
   const navigate = useNavigate();
   const [timelineProps, api] = useSpring(
@@ -29,48 +39,53 @@ const GameScreen = () => {
 
   useEffect(() => {
     if (canvasRef.current) {
+      console.log("kaplay");
       kaplay({
         canvas: canvasRef.current,
         background: [10, 152, 172],
       });
-    }
-  }, []);
 
-  useEffect(() => {
-    if (canvasRef.current && !kaplayRef.current) {
       kaplayRef.current = init(
         (currentMonth) => {
-          console.log("currentMonth", currentMonth);
           api.start({ x: (currentMonth * -TOTAL_WIDTH) / TOTAL_MONTHS });
         },
         () => {
           navigate("/learning");
         },
+        gameState,
       );
     }
   }, []);
 
   return (
-    <Box
-      height={"100vh"}
-      width={"100vw"}
-      sx={{
-        position: "relative",
-      }}
-    >
-      <canvas ref={canvasRef} width="100%" height="100%" />
+    <Stack direction={"row"}>
       <Box
+        height={"100vh"}
+        width={"100%"}
         sx={{
-          zIndex: 2,
-          position: "absolute",
-          bottom: 0,
-          left: 0,
-          width: "100%",
+          position: "relative",
+          maxWidth: "430px",
+          maxHeight: "932px",
         }}
       >
-        <Timeline style={timelineProps} />
+        <canvas ref={canvasRef} width="100%" height="100%" />
+        <Box
+          sx={{
+            zIndex: 2,
+            position: "absolute",
+            bottom: 0,
+            left: 0,
+            width: "100%",
+          }}
+        >
+          {/*<Timeline style={timelineProps} />*/}
+        </Box>
       </Box>
-    </Box>
+
+      {/*<Box sx={{ background: "#fff", width: 820 }} gap={2}>*/}
+      {/*  <Editor gameState={gameState.current} />*/}
+      {/*</Box>*/}
+    </Stack>
   );
 };
 

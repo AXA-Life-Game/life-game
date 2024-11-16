@@ -1,12 +1,12 @@
 import { loadEntities } from "./game/game-entities";
 import { initGameScene } from "./game/game-scene";
 
-const init = (ageCallback, gameEndCallback) => {
+const init = (ageCallback, gameEndCallback, gameState) => {
   // @ts-check
   loadEntities();
   setGravity(3200);
 
-  initGameScene("game", ageCallback, gameEndCallback);
+  initGameScene("game", ageCallback, gameEndCallback, gameState);
 
   layers(["background", "game"], "game");
 
