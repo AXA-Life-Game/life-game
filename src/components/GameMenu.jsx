@@ -8,7 +8,7 @@ import { differenceInMilliseconds, intervalToDuration } from "date-fns";
 
 const AnimatedStack = animated(Stack);
 const AnimatedBox = animated(Box);
-const RELEASE_DATE = new Date(2024, 10, 18, 0);
+const RELEASE_DATE = new Date(2024, 10, 25, 0);
 
 const GameMenu = () => {
   const [diff, setDiff] = useState({
