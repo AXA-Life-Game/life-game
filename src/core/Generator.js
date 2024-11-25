@@ -22,8 +22,6 @@ export const getRandomEvents = (lifeEvents) => {
   return [possibleEvents[Math.floor(rand(0, possibleEvents.length))]];
 };
 
-const queue = ["💼", "🏢", "🎓", "🤑", "💍", "🏦", "👶", "🕒"];
-
 export const getNextEvent = (gameState) => {
   const state = Object.values(gameState.lifeIndicators).reduce((acc, item) => {
     return {
