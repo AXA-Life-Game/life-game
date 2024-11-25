@@ -58,20 +58,13 @@ export function initGameScene(
     let currentMonth = 0;
     let lastEvent = null;
     game.loop(YEAR_DURATION * 2, () => {
-      const nextEvent = getNextEvent(
-        lastEvent,
-        gameState.current.probabilityMatrix,
-      );
+      const event = getNextEvent(gameState.current);
 
-      if (!nextEvent) {
+      if (!event) {
         console.log("no possible events found");
         return;
       }
-      const event = gameState.current.lifeEvents.find(
-        (item) => item.icon === nextEvent,
-      );
 
-      console.log("Next event", nextEvent);
       const addedObject = level.spawn(
         event.icon,
         currentTile + tileWidth,

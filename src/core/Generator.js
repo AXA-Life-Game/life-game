@@ -1,5 +1,11 @@
 import { maxBy } from "lodash";
+import model from "./model.json";
+import { NeuralNetwork } from "brain.js";
+import { normalizeInput } from "./dataset.js";
+import dataset from "./dataset.json";
 
+const net = new NeuralNetwork();
+net.fromJSON(model);
 const getHighestProbability = (lifeEvents) => {
   return maxBy(lifeEvents, "probability").probability;
 };
@@ -13,31 +19,26 @@ export const getPossibleEvents = (lifeEvents) => {
 export const getRandomEvents = (lifeEvents) => {
   const possibleEvents = getPossibleEvents(lifeEvents);
 
-  console.log("possibleEvents", possibleEvents);
-
   return [possibleEvents[Math.floor(rand(0, possibleEvents.length))]];
 };
 
-export const getNextEvent = (currentEvent, probabilitiesMatrix) => {
-  if (!currentEvent) return Object.keys(probabilitiesMatrix)[0];
+const queue = ["💼", "🏢", "🎓", "🤑", "💍", "🏦", "👶", "🕒"];
 
-  const eventProbabilities = probabilitiesMatrix[currentEvent];
+export const getNextEvent = (gameState) => {
+  const state = Object.values(gameState.lifeIndicators).reduce((acc, item) => {
+    return {
+      ...acc,
+      [item.key]: item.value,
+    };
+  }, {});
 
-  if (!eventProbabilities) return null;
+  const prediction = net.run(normalizeInput(dataset, state));
 
-  const cumulativeProbabilities = Object.entries(eventProbabilities).reduce(
-    (acc, [event, probability]) => {
-      const lastSum = acc.length > 0 ? acc[acc.length - 1].sum : 0;
-      return [...acc, { event, sum: lastSum + probability }];
-    },
-    [],
-  );
+  const topEvents = Object.entries(prediction)
+    .sort(([, a], [, b]) => b - a) // Sort by probability descending
+    .slice(0, 3);
 
-  const random = Math.random();
+  const [topEventKey] = topEvents[0];
 
-  const nextEvent = cumulativeProbabilities.find(
-    ({ sum }) => random <= sum,
-  )?.event;
-
-  return nextEvent || null;
+  return gameState.lifeEvents.find((item) => item.key === topEventKey);
 };

@@ -1,69 +1,90 @@
-import { Button, Input, Table } from "@mui/joy";
-import { Controller, useForm } from "react-hook-form";
+import { Button, Option, Select, Table } from "@mui/joy";
 import { Box, Stack } from "@mui/system";
+import { useState } from "react";
+import { applyEffects } from "../core/Effect.js";
+import { getLifeEventByKey } from "../core/LifeEvent.js";
 
 const Editor = ({ gameState }) => {
-  const eventsList = gameState.current.lifeEvents;
-  const { control, handleSubmit, getValues } = useForm({
-    defaultValues: gameState.current.probabilityMatrix,
-  });
+  const lifeIndicators = gameState.current.lifeIndicators;
+  const lifeEvents = gameState.current.lifeEvents;
 
-  const onSubmit = (data) => {
-    gameState.current.probabilityMatrix = data;
+  const [currentYear, setCurrentYear] = useState(18);
+  const [nextEvent, setNextEvent] = useState("GET_JOB");
+
+  const [history, setHistory] = useState([structuredClone(lifeIndicators)]);
+
+  const onNextYearClick = () => {
+    lifeIndicators.AGE.value = currentYear + 1;
+    lifeIndicators.MONEY.value += lifeIndicators.SALARY.value * 12;
+
+    if (nextEvent !== "NONE") {
+      gameState.current = applyEffects(
+        getLifeEventByKey(lifeEvents, nextEvent).effects,
+        gameState.current,
+      );
+    }
+
+    setCurrentYear(currentYear + 1);
+
+    setHistory((curr) => [
+      ...curr,
+      structuredClone({
+        ...lifeIndicators,
+        event: nextEvent,
+      }),
+    ]);
   };
 
   return (
     <Stack gap={2}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <Table size={"xs"}>
-          <thead>
-            <tr>
-              <th width={"36px"}></th>
-              {eventsList.map((item) => (
-                <th key={item.key}>{item.icon}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {gameState.current.lifeEvents.map((lifeEvent) => (
-              <tr key={lifeEvent.key}>
-                <td>{lifeEvent.icon}</td>
-                {gameState.current.lifeEvents.map((event) => (
-                  <td key={event.key}>
-                    <Controller
-                      defaultValue={0}
-                      name={`${lifeEvent.icon}.${event.icon}`}
-                      control={control}
-                      render={({ field }) => (
-                        <Input
-                          size={"xs"}
-                          variant={"soft"}
-                          value={field.value}
-                          onChange={field.onChange}
-                        />
-                      )}
-                    />
-                  </td>
-                ))}
-              </tr>
+      <Table size={"xs"}>
+        <thead>
+          <tr>
+            {Object.keys(lifeIndicators).map((key) => (
+              <th key={key}>{key}</th>
             ))}
-          </tbody>
-        </Table>
+            <th>Event</th>
+          </tr>
+        </thead>
+        <tbody>
+          {history.map((item, index) => {
+            return (
+              <tr key={item.AGE.value}>
+                {Object.keys(lifeIndicators).map((key) => (
+                  <td key={key}>{item[key].value}</td>
+                ))}
 
-        <Box>
-          <Button type={"submit"}>Apply</Button>
-        </Box>
-      </form>
-
-      <Box>
-        <Button
-          onClick={() => {
-            console.log(getValues());
+                <td>{item.event}</td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
+      <Stack gap={4} direction={"row"}>
+        <Select
+          value={nextEvent}
+          onChange={(e, value) => {
+            setNextEvent(value);
           }}
         >
-          Export
+          <Option value={"NONE"}>NONE</Option>
+
+          {lifeEvents.map((e) => {
+            return (
+              <Option value={e.key} key={e.key}>
+                {e.icon} {e.key}
+              </Option>
+            );
+          })}
+        </Select>
+        <Button
+          onClick={() => {
+            onNextYearClick();
+          }}
+        >
+          Next Year
         </Button>
-      </Box>
+      </Stack>
     </Stack>
   );
 };

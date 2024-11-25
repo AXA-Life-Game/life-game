@@ -3,7 +3,7 @@ import { animated, useSpring } from "@react-spring/web";
 
 const AnimatedStack = animated(Stack);
 
-export const TIMELINE_YEAR_WIDTH = 200;
+export const TIMELINE_YEAR_WIDTH = 250;
 export const TIMELINE_AGE_ARRAY = Array.from(
   { length: 70 - 18 + 1 },
   (_, i) => i + 18,

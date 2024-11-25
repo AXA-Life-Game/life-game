@@ -2,15 +2,15 @@ import { createRef, useEffect, useRef } from "react";
 import init from "../game.js";
 import { Box, Stack } from "@mui/system";
 import kaplay from "kaplay";
-import {
+import Timeline, {
   TIMELINE_AGE_ARRAY,
   TIMELINE_YEAR_WIDTH,
 } from "../components/Timeline.jsx";
 import { useSpring } from "@react-spring/web";
 import { useNavigate } from "react-router-dom";
-import { LIFE_EVENTS, ProbabilityMatrix } from "../core/LifeEvent.js";
+import { LIFE_EVENTS } from "../core/LifeEvent.js";
 import { LifeIndicators } from "../core/LifeIndicator.js";
-import Editor from "../components/Editor.jsx";
+import MoneyIndicator from "../components/MoneyIndicator.jsx";
 
 const TOTAL_YEARS = TIMELINE_AGE_ARRAY.length;
 const TOTAL_MONTHS = TOTAL_YEARS * 12;
@@ -22,7 +22,6 @@ const GameScreen = () => {
   const gameState = useRef({
     lifeEvents: LIFE_EVENTS,
     lifeIndicators: LifeIndicators,
-    probabilityMatrix: ProbabilityMatrix,
   });
 
   const navigate = useNavigate();
@@ -65,6 +64,18 @@ const GameScreen = () => {
           maxHeight: "932px",
         }}
       >
+        <Box
+          sx={{
+            zIndex: 2,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            backgroundColor: "#00008F",
+          }}
+        >
+          <MoneyIndicator state={gameState} />
+        </Box>
         <canvas ref={canvasRef} width="100%" height="100%" />
         <Box
           sx={{
@@ -75,13 +86,13 @@ const GameScreen = () => {
             width: "100%",
           }}
         >
-          {/*<Timeline style={timelineProps} />*/}
+          <Timeline style={timelineProps} />
         </Box>
       </Box>
 
-      <Box sx={{ background: "#fff", width: 920, p: 2 }} gap={2}>
-        <Editor gameState={gameState} />
-      </Box>
+      {/*<Box sx={{ background: "#fff", width: 920, p: 2 }} gap={2}>*/}
+      {/*  <Editor gameState={gameState} />*/}
+      {/*</Box>*/}
     </Stack>
   );
 };
